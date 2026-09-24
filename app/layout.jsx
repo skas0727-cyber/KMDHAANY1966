@@ -1,0 +1,52 @@
+import "./globals.css";
+import Chrome from "./chrome";
+import { SITE_URL, NAME, BLOG, PLACE, pageMeta } from "./site";
+
+export const metadata = {
+  metadataBase: new URL(SITE_URL),
+  ...pageMeta(
+    "/",
+    "논산 한의원 광명당한의원 | 강경 SINCE 1966",
+    "충남 논산시 강경읍 광명당한의원. 1966년부터 3대째 이어온 한의원으로 침·약침, 추나요법, 교통사고 후유증(자동차보험 본인부담금 0원), 한방 다이어트, 피부 관리(슈링크·토닝·점 제거)를 합니다. 월·수·금 야간진료."
+  ),
+  title: { default: "논산 한의원 광명당한의원 | 강경 SINCE 1966", template: `%s | ${NAME}` },
+};
+
+// local-business structured data: name/address/phone/hours must match the footer and Naver Place (NAP consistency)
+const hours = (days, closes) => ({ "@type": "OpeningHoursSpecification", dayOfWeek: days, opens: "08:30", closes });
+const clinic = {
+  "@context": "https://schema.org",
+  "@type": "MedicalClinic",
+  name: NAME,
+  alternateName: ["광명당 한의원", "논산 광명당한의원", "강경 광명당한의원"],
+  description: "1966년 광명당한약방에서 시작해 3대째 이어온 충남 논산시 강경읍의 한의원. 침·약침, 추나요법, 교통사고 후유증, 한방 다이어트, 피부 관리.",
+  url: SITE_URL,
+  logo: `${SITE_URL}/img/logo.png`,
+  image: `${SITE_URL}/img/lobby.jpg`,
+  telephone: "+82-41-745-2141",
+  foundingDate: "1966",
+  address: { "@type": "PostalAddress", streetAddress: "대흥로6번길 9", addressLocality: "논산시 강경읍", addressRegion: "충청남도", addressCountry: "KR" },
+  geo: { "@type": "GeoCoordinates", latitude: 36.1553892, longitude: 127.0156908 },
+  openingHoursSpecification: [hours(["Monday", "Wednesday", "Friday"], "20:00"), hours(["Tuesday", "Thursday"], "18:00"), hours("Saturday", "13:00")],
+  areaServed: ["논산시", "강경읍"],
+  employee: { "@type": "Person", name: "남인우", jobTitle: "대표원장" },
+  availableService: [
+    ["교통사고 후유증 치료", "/accident"],
+    ["한방 다이어트", "/diet"],
+    ["피부 관리 (슈링크·토닝·점 제거)", "/skin"],
+    ["추나요법", "/#pain"],
+    ["침·약침", "/#pain"],
+  ].map(([name, path]) => ({ "@type": "MedicalTherapy", name, url: SITE_URL + path })),
+  sameAs: [BLOG, PLACE],
+};
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="ko">
+      <body>
+        <Chrome>{children}</Chrome>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(clinic) }} />
+      </body>
+    </html>
+  );
+}
