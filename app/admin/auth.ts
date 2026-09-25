@@ -16,10 +16,13 @@ function safeEqual(a: Buffer, b: Buffer): boolean {
   return a.length === b.length && timingSafeEqual(a, b);
 }
 
-// unset, blank or short password = admin disabled (fail closed; never sign with an empty/guessable key)
+// unset, blank or short password = admin disabled in production (fail closed; never sign with an empty/guessable key)
+// ponytail: local `npm run dev` with no ADMIN_PASSWORD and no real data store falls back to "1234" so /admin works
+// without an .env; builds compile NODE_ENV to "production", so deployments still need a 16+ char ADMIN_PASSWORD
 export function adminSecret(): string | null {
   const s = process.env.ADMIN_PASSWORD;
-  return s && s.length >= 16 ? s : null;
+  if (s && s.length >= 16) return s;
+  return process.env.NODE_ENV === "development" && !s && !process.env.SUPABASE_SERVICE_ROLE_KEY ? "1234" : null;
 }
 
 // cookie signing key is derived with scrypt, so a stolen cookie can't be brute-forced back to the password cheaply
