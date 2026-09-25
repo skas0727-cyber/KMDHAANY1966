@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import Faq from "../../faq";
-import { CATEGORIES, PROGRAMS, getProgram } from "../../programs";
+import Faq, { Head, Cta, Notice } from "../../faq";
+import { CAT, PROGRAMS, getProgram } from "../../programs";
 import { pageMeta, SITE_URL, NAME, TEL, TEL_LINK } from "../../site";
 import "./view.css";
 
@@ -19,8 +19,6 @@ export async function generateMetadata({ params }: Props) {
   const first = p.intro.split(". ")[0].replace(/\.$/, "") + ".";
   return pageMeta(`/program/${p.slug}`, `논산 ${p.name} 가격`, `${p.summary}. ${first} 광명당한의원 가격 안내(VAT 별도).`);
 }
-
-const CAT = Object.fromEntries(CATEGORIES);
 
 export default async function Page({ params }: Props) {
   const { slug } = await params;
@@ -46,7 +44,7 @@ export default async function Page({ params }: Props) {
             <a href="/program">피부 프로그램</a>
             <span>{CAT[p.cat]}</span>
           </nav>
-          <h1><span className="sub-label gm">논산 피부 한의원</span> {p.name}</h1>
+          <h1><span className="sub-label">논산 피부 한의원</span> {p.name}</h1>
           <p className="pv-summary">{p.summary}</p>
           <ul className="sub-tags">{p.concerns.map((c) => <li key={c}>#{c}</li>)}</ul>
           <p className="pv-intro">{p.intro}</p>
@@ -64,7 +62,7 @@ export default async function Page({ params }: Props) {
                 </div>
                 <p className="pv-cost">
                   {o.orig && <del>{o.orig}</del>}
-                  <strong className="gm">{o.price}</strong>
+                  <strong>{o.price}</strong>
                 </p>
               </li>
             ))}
@@ -75,52 +73,34 @@ export default async function Page({ params }: Props) {
 
         <div className="pv-body">
           <section className="sub-cat">
-            <div className="sub-cat-head" data-aos>
-              <div>
-                <h2>이런 분들께 추천드립니다</h2>
-              </div>
-            </div>
+            <Head title="이런 분들께 추천드립니다" />
             <ol className="pv-rec" data-aos>{p.recommend.map((r) => <li key={r}>{r}</li>)}</ol>
           </section>
 
           <section className="sub-cat">
-            <div className="sub-cat-head" data-aos>
-              <div>
-                <h2>이런 효과를 기대할&nbsp;수&nbsp;있습니다</h2>
-              </div>
-            </div>
+            <Head title="이런 효과를 기대할&nbsp;수&nbsp;있습니다" />
             <ul className="sub-cards pv-fx" data-aos>
               {p.effects.map(([t, d]) => <li key={t}><h3>{t}</h3><p>{d}</p></li>)}
             </ul>
           </section>
 
           <section className="sub-cat">
-            <div className="sub-cat-head" data-aos>
-              <div>
-                <h2>시술 과정</h2>
-              </div>
-            </div>
+            <Head title="시술 과정" />
             <ol className="sub-steps" data-aos>
               {p.steps.map(([t, d]) => <li key={t}><h3>{t}</h3><p>{d}</p></li>)}
             </ol>
           </section>
 
-          <section className="sub-notice" data-aos>
-            <h2>시술 후 주의사항</h2>
-            <ul>{p.cautions.map((c) => <li key={c}>{c}</li>)}</ul>
-          </section>
+          <Notice title="시술 후 주의사항" items={p.cautions} />
 
           <Faq items={p.faq} />
         </div>
       </div>
 
       <section className="sub-cat pv-others">
-        <div className="sub-cat-head" data-aos>
-          <div>
-            <h2>다른 프로그램</h2>
-          </div>
+        <Head title="다른 프로그램">
           <a className="pv-all" href="/program">전체 프로그램 보기</a>
-        </div>
+        </Head>
         <ul data-aos>
           {PROGRAMS.filter((o) => o.slug !== p.slug).map((o) => (
             <li key={o.slug}>
@@ -134,11 +114,7 @@ export default async function Page({ params }: Props) {
         </ul>
       </section>
 
-      <section className="sub-cta">
-        <h2>{p.name}, 상담으로 먼저 확인해 보세요</h2>
-        <p>피부 상태를 진단한 뒤 알맞은 시술과 횟수를 안내해 드립니다.</p>
-        <a href={TEL_LINK}>{TEL} 전화 상담</a>
-      </section>
+      <Cta title={`${p.name}, 상담으로 먼저 확인해 보세요`} text="피부 상태를 진단한 뒤 알맞은 시술과 횟수를 안내해 드립니다." />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
     </main>

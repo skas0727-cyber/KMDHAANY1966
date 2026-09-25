@@ -1,6 +1,6 @@
 // single source for skin programs, shared by /skin (overview), /program (list) and /program/[slug] (detail)
 // prices come from the clinic's own price sheets and are VAT 별도
-export type ProgramOption = { name: string; spec: string; price: string; orig?: string; first?: boolean };
+type ProgramOption = { name: string; spec: string; price: string; orig?: string; first?: boolean };
 export type Program = {
   slug: string; cat: string; name: string; summary: string; intro: string;
   concerns: string[]; options: ProgramOption[]; recommend: string[];
@@ -8,6 +8,7 @@ export type Program = {
 };
 
 export const CATEGORIES: [string, string][] = [["lifting", "리프팅과 탄력"], ["texture", "재생과 피부결"], ["toning", "색소와 피부톤"], ["removal", "점과 잡티 제거"]];
+export const CAT = Object.fromEntries(CATEGORIES);
 export const CONCERNS = ["피부톤", "잡티", "피부결", "모공", "흉터와 흔적", "탄력", "윤곽정리", "수분감", "점과 쥐젖"];
 
 export const PROGRAMS: Program[] = [
@@ -53,7 +54,7 @@ export const PROGRAMS: Program[] = [
     steps: [["피부진단", "색소 종류와 깊이를 확인합니다."], ["세안과 준비", "메이크업을 지우고 피부를 준비합니다."], ["토닝 시술", "선택한 토닝을 부위별로 진행합니다."], ["진정관리", "진정관리 후 홈케어를 안내합니다."]],
     cautions: ["시술 후에는 자외선 차단제를 꼭 발라 주세요.", "일시적인 붉어짐이 있을\u00A0수\u00A0있습니다.", "색소 관리는 여러 회차로 꾸준히 받을 때 도움이 됩니다.", "결과에는 개인차가 있습니다."],
     faq: [
-      ["레이저, 듀얼, 트리플 토닝은 무엇이 다른가요?", "레이저토닝은 1064nm 토닝, 듀얼토닝은 1064nm 토닝에 제네시스를 더한 것, 트리플토닝은 여기에 532nm 색소토닝까지 더한 프리미엄 토닝입니다."],
+      ["레이저, 듀얼, 트리플 토닝은 무엇이 다른가요?", "레이저토닝은 1064nm 토닝, 듀얼토닝은 1064nm 토닝에 제네시스를 더한 것, 트리플토닝은 여기에 532nm 색소토닝까지 더한 토닝입니다."],
       ["몇 번 받아야 하나요?", "색소 종류와 깊이에 따라 다르며, 보통 여러 회차로 나눠 관리합니다. 진단 후 횟수를 안내해 드립니다."],
       ["시술 후 바로 화장할\u00A0수\u00A0있나요?", "피부 상태에 따라 다르며, 시술 후 화장이 가능한 시점을 안내해 드립니다."],
     ],

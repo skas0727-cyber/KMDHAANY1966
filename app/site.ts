@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 // single source for clinic facts (name/address/phone) shared by pages, metadata and structured data
 export const SITE_URL = "https://kmdhaany1966.com"; // canonical, sitemap, schema
 export const NAME = "광명당한의원";
-export const IMG = "/img/";
 export const BLOG = "https://blog.naver.com/kmdhaany1966";
 export const PLACE = "https://map.naver.com/p/entry/place/1561910316";
 // KakaoTalk channel: /chat opens the 1:1 chat directly

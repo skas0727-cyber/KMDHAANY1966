@@ -1,20 +1,18 @@
 import { requireAdmin } from "./auth";
 import { logout, updateInquiryAction, deleteInquiryAction } from "./actions";
-import { listInquiries, storeMode, STATUS_LABEL, type Inquiry, type InquiryStatus } from "../inquiries";
+import { listInquiries, storeMode, STATUS_LABEL, STATUSES, type Inquiry, type InquiryStatus } from "../inquiries";
 import ConfirmSubmit from "./confirm-submit";
 
-const STATUSES: InquiryStatus[] = ["new", "in_progress", "done"];
 const TABS: [string, string][] = [["all", "전체"], ...STATUSES.map((s): [string, string] => [s, STATUS_LABEL[s]])];
 const fmt = new Intl.DateTimeFormat("ko-KR", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Seoul" });
 
 type SearchParams = { status?: string; q?: string };
 
 function tabHref(status: string, q?: string): string {
-  const params = new URLSearchParams();
-  if (status !== "all") params.set("status", status);
-  if (q) params.set("q", q);
-  const qs = params.toString();
-  return qs ? `/admin?${qs}` : "/admin";
+  const p = new URLSearchParams();
+  if (status !== "all") p.set("status", status);
+  if (q) p.set("q", q);
+  return p.toString() ? `/admin?${p}` : "/admin";
 }
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
@@ -110,7 +108,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   </td>
                   <td data-label="삭제">
                     <form action={del}>
-                      <ConfirmSubmit label="삭제" confirmMessage={`${item.name}님의 문의를 삭제할까요? 삭제하면 되돌릴 수 없습니다.`} />
+                      <ConfirmSubmit confirmMessage={`${item.name}님의 문의를 삭제할까요? 삭제하면 되돌릴 수 없습니다.`} />
                     </form>
                   </td>
                 </tr>

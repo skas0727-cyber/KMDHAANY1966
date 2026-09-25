@@ -1,4 +1,5 @@
 // inquiry storage: Supabase (PostgREST via plain fetch) in prod, JSON file in local dev, throws when unconfigured
+import "server-only";
 import { randomUUID } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -7,6 +8,7 @@ export type InquiryStatus = "new" | "in_progress" | "done";
 export type Inquiry = { id: string; created_at: string; name: string; phone: string; item: string; sms_consent: boolean; status: InquiryStatus; memo: string };
 
 export const STATUS_LABEL: Record<InquiryStatus, string> = { new: "신규", in_progress: "상담중", done: "완료" };
+export const STATUSES: InquiryStatus[] = ["new", "in_progress", "done"];
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -31,11 +33,6 @@ async function supabaseFetch(query: string, init?: RequestInit): Promise<Respons
   });
   if (!res.ok) throw new Error(`inquiry store request failed (${res.status})`);
   return res;
-}
-
-// PostgREST or=(...) filters break on these characters; strip them from user-supplied search terms
-function sanitizeSearchTerm(q: string): string {
-  return q.replace(/[,()*.:'"\\]/g, "");
 }
 
 // --- Local JSON file (dev only, no env configured) ---
@@ -67,19 +64,18 @@ export async function createInquiry(input: { name: string; phone: string; item: 
   await writeLocal(rows);
 }
 
-export async function listInquiries(opts?: { status?: InquiryStatus; q?: string }): Promise<Inquiry[]> {
+export async function listInquiries(opts?: { q?: string }): Promise<Inquiry[]> {
   const mode = storeMode();
   if (mode === "unconfigured") throw new Error("inquiry store not configured");
   if (mode === "supabase") {
     const params = new URLSearchParams({ select: "*", order: "created_at.desc" });
-    if (opts?.status) params.set("status", `eq.${opts.status}`);
-    const term = opts?.q ? sanitizeSearchTerm(opts.q) : "";
+    // PostgREST or=(...) filters break on these characters; strip them from user-supplied search terms
+    const term = opts?.q ? opts.q.replace(/[,()*.:'"\\]/g, "") : "";
     if (term) params.set("or", `(name.ilike.*${term}*,phone.ilike.*${term}*)`);
     const res = await supabaseFetch(`?${params.toString()}`);
     return (await res.json()) as Inquiry[];
   }
   let rows = await readLocal();
-  if (opts?.status) rows = rows.filter((r) => r.status === opts.status);
   if (opts?.q) {
     const q = opts.q.toLowerCase();
     rows = rows.filter((r) => r.name.toLowerCase().includes(q) || r.phone.toLowerCase().includes(q));

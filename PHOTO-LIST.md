@@ -124,7 +124,7 @@
 |---|---|---|---|
 | 피부 시술(/program) 상단 탭 배경 5장 | PC 가로 / 모바일 세로 | program, program-lifting, -texture, -toning, -removal (파란 배경 여성, 같은 모델) | ✅ Higgsfield 생성 |
 | 한약과 치료(/treatment) 상단 탭 배경 6장 | PC 가로 / 모바일 세로 | treatment, treatment-custom, -gynecology, -diet, -care, -package (같은 정물 톤) | ✅ Higgsfield 생성 |
-| 피부 클리닉(/skin) 상단 | PC 가로 / 모바일 세로 | skin/hero-wide, skin/hero (파란 배경 여성) | ✅ Higgsfield 재생성 |
+| 피부 클리닉(/skin) 상단 | PC 가로 / 모바일 세로 | skin/hero-wide, skin/hero (상담 장면) | ✅ Higgsfield 재생성 |
 
 ### 공통 (모든 페이지)
 | 자리 | 비율 | 현재 사진 | 판정 |
@@ -138,7 +138,7 @@
 | 교통사고 상단 | 화면 전체 폭 배경 (가로 2560×1200 권장, 인물은 가운데~오른쪽, 어둡게 덮임) | PC: accident-wide / 모바일: backpain (A1) | ✅ Higgsfield로 가로컷 생성 완료 |
 | 교통사고 치료 항목 4개 | 가로 4:3 | needle, room-spine, herbs, rafos-use | 🔁 T1, ✅, 🔁 H3, ✅ |
 | 다이어트 상단 | 화면 전체 폭 배경 (위와 동일) | PC: diet-wide / 모바일: herbs (H2) | ✅ Higgsfield로 가로컷 생성 완료 |
-| 피부 클리닉 상단 | 화면 전체 폭 배경 (위와 동일) | PC: skin/hero-wide / 모바일: hero-model (S1) | ✅ Higgsfield로 가로컷 생성 완료 |
+| 피부 클리닉 상단 | 화면 전체 폭 배경 (위와 동일) | PC: skin/hero-wide / 모바일: skin/hero (상담 장면) | ✅ Higgsfield로 가로컷 생성 완료 |
 | 피부 질환 그림 6개 | 8:5 일러스트 | skin/*.jpg (피부 단면 모식도) | ✅ Higgsfield로 생성 완료 (실제 환자 사진은 의료광고 위험이라 모식도 유지) |
 | 시술 목록과 상세 페이지 | — | 사진 자리 없음 | 필요하면 시술별 대표컷 자리 추가 |
 

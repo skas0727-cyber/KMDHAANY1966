@@ -1,9 +1,10 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import Script from "next/script";
 import "./chrome.css";
-import { IMG, BLOG, PLACE, KAKAO_CHANNEL, KAKAO_PLACE, TEL, TEL_LINK, ADDRESS, KAKAO_JS_KEY } from "./site";
+import { BLOG, PLACE, KAKAO_CHANNEL, KAKAO_PLACE, TEL, TEL_LINK, ADDRESS, KAKAO_JS_KEY } from "./site";
 
 const EXT = { target: "_blank", rel: "noreferrer" };
 declare global {
@@ -21,28 +22,20 @@ const CONSULT = {
   "추나와 재활": ["추나요법", "재활과 운동치료"],
   피부: ["첫 방문 체험", "슈링크 리프팅", "레이저, 듀얼, 트리플 토닝", "프락셀, PN 스킨부스터", "점과 잡티 제거"],
   다이어트: ["한방 다이어트"],
+  한약: ["보약", "치료약"],
   기타: ["비염과 감기", "안면마비", "기타"],
 };
 
 // tiny original inline line icons (stroke currentColor) -- no reference-site icons/logos reused
-const IconPhone = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M5 4h3.3l1.3 4.1-2.1 1.7a12.4 12.4 0 0 0 6.7 6.7l1.7-2.1L20 15.7V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" /></svg>
+const Svg = ({ w = 1.8, children }: { w?: number; children: ReactNode }) => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={w} strokeLinecap="round" strokeLinejoin="round">{children}</svg>
 );
-const IconPin = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 21.5S5.5 14.8 5.5 9.8a6.5 6.5 0 0 1 13 0c0 5-6.5 11.7-6.5 11.7Z" /><circle cx="12" cy="9.6" r="2.4" /></svg>
-);
-const IconMap = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 4 3.8 5.9v14L9 18l6 2 5.2-1.9v-14L14 6 9 4Z" /><path d="M9 4v14M14 6v14" /></svg>
-);
-const IconEdit = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0-3-3L5.2 16.8 4 20Z" /><path d="M13.3 7.9l2.8 2.8" /></svg>
-);
-const IconChat = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 4.5h15v11.4H9.6L4.5 20V4.5Z" /></svg>
-);
-const IconChevron = () => (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 15l6-6 6 6" /></svg>
-);
+const IconPhone = () => <Svg><path d="M5 4h3.3l1.3 4.1-2.1 1.7a12.4 12.4 0 0 0 6.7 6.7l1.7-2.1L20 15.7V19a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z" /></Svg>;
+const IconPin = () => <Svg><path d="M12 21.5S5.5 14.8 5.5 9.8a6.5 6.5 0 0 1 13 0c0 5-6.5 11.7-6.5 11.7Z" /><circle cx="12" cy="9.6" r="2.4" /></Svg>;
+const IconMap = () => <Svg><path d="M9 4 3.8 5.9v14L9 18l6 2 5.2-1.9v-14L14 6 9 4Z" /><path d="M9 4v14M14 6v14" /></Svg>;
+const IconEdit = () => <Svg><path d="M4 20h4.2L19 9.2a2.1 2.1 0 0 0-3-3L5.2 16.8 4 20Z" /><path d="M13.3 7.9l2.8 2.8" /></Svg>;
+const IconChat = () => <Svg><path d="M4.5 4.5h15v11.4H9.6L4.5 20V4.5Z" /></Svg>;
+const IconChevron = () => <Svg w={2.2}><path d="M6 15l6-6 6 6" /></Svg>;
 
 // shared header, drawer, footer and consult bar around every page
 export default function Chrome({ children }: { children: React.ReactNode }) {
@@ -54,6 +47,9 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
   const [mapFailed, setMapFailed] = useState(false); // SDK rejected (domain not registered in Kakao Developers) → static map
   const formRef = useRef<HTMLDialogElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const burgerRef = useRef<HTMLButtonElement>(null);
+  const menuFirst = useRef(true);
 
   const drawMap = () =>
     window.kakao.maps.load(() => {
@@ -76,9 +72,10 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // full-screen menu locks page scroll while open
+  // full-screen menu: focus its close button on open, return focus to the burger on close (scroll lock is CSS-only, see chrome.css)
   useEffect(() => {
-    document.documentElement.style.overflow = menuOpen ? "hidden" : "";
+    if (menuFirst.current) { menuFirst.current = false; return; }
+    (menuOpen ? closeRef : burgerRef).current?.focus();
   }, [menuOpen]);
 
   // AOS replacement: reveal once on first intersection; re-run per page
@@ -116,30 +113,30 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
       formRef.current?.close();
     } else {
       const err = await res?.json().then((d) => d.error as string, () => null);
-      alert(`${err ?? "접수하지 못했습니다."} 전화(${TEL})로도 문의하실\u00A0수\u00A0있습니다.`);
+      alert(`${(err ?? "접수하지 못했습니다").replace(/\.$/, "")}. 전화(${TEL})로도 문의하실\u00A0수\u00A0있습니다.`);
     }
   };
 
-  const toggleConsult = () => setConsultOpen((v) => !v);
-  const openForm = () => formRef.current?.showModal();
-
   // admin pages render bare (no public header/footer/consult bar)
   if (pathname.startsWith("/admin")) return <>{children}</>;
+
+  // internal routes match the current page or any of its sub-paths; "/" only matches the home page itself
+  const current = (h: string) => (h.startsWith("/") && (h === "/" ? pathname === "/" : pathname.startsWith(h))) ? "page" : undefined;
 
   return (
     <>
       {/* pill header: logo left, white rounded bar right (CTA, page links, burger); burger opens the full-screen menu */}
       <header className={"hd" + (hidden && !menuOpen ? " is-hidden" : "") + (menuOpen ? " is-open" : "")}>
-        <a className="hd-logo" href="/"><img src={IMG + "logo.png"} alt="광명당한의원" /></a>
-        <nav className="hd-bar" inert={menuOpen}>
+        <a className="hd-logo" href="/"><img src="/img/logo.png" alt="광명당한의원" /></a>
+        <nav className="hd-bar" inert={menuOpen} aria-label="주 메뉴">
           <a className="hd-cta" href={KAKAO_CHANNEL} {...EXT}>카카오톡 상담</a>
           <div className="hd-tools">
             <ul className="hd-links">
               {NAV.map(([n, h]) => (
-                <li key={n}><a href={h} aria-current={pathname === h ? "page" : undefined} {...(h === BLOG && EXT)}>{n}</a></li>
+                <li key={n}><a href={h} aria-current={current(h)} {...(h === BLOG && EXT)}>{n}</a></li>
               ))}
             </ul>
-            <button type="button" className="hd-burger" onClick={() => setMenuOpen(true)} aria-label="전체메뉴 열기" aria-expanded={menuOpen} aria-controls="hd-menu">
+            <button type="button" ref={burgerRef} className="hd-burger" onClick={() => setMenuOpen(true)} aria-label="전체메뉴 열기" aria-expanded={menuOpen} aria-controls="hd-menu">
               <span /><span />
             </button>
           </div>
@@ -147,16 +144,16 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
       </header>
 
       <div id="hd-menu" className={"mn" + (menuOpen ? " is-open" : "")} role="dialog" aria-modal="true" aria-label="전체메뉴" inert={!menuOpen}>
-        <div className="mn-left"><img src={IMG + "lobby-wide.jpg"} alt="" loading="lazy" /></div>
+        <div className="mn-left"><img src="/img/lobby-wide.jpg" alt="" loading="lazy" /></div>
         <div className="mn-right">
-          <button type="button" className="mn-close" onClick={() => setMenuOpen(false)} aria-label="메뉴 닫기">
+          <button type="button" ref={closeRef} className="mn-close" onClick={() => setMenuOpen(false)} aria-label="메뉴 닫기">
             <svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><line x1="6" y1="6" x2="30" y2="30" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="30" y1="6" x2="6" y2="30" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
           </button>
-          <nav className="mn-nav">
+          <nav className="mn-nav" aria-label="전체메뉴">
             <ul>
               {NAV.map(([n, h], k) => (
                 <li key={n} style={{ "--k": k } as React.CSSProperties}>
-                  <a className="mn-link" href={h} aria-current={pathname === h ? "page" : undefined} {...(h === BLOG && EXT)} onClick={() => setMenuOpen(false)}>{n}</a>
+                  <a className="mn-link" href={h} aria-current={current(h)} {...(h === BLOG && EXT)} onClick={() => setMenuOpen(false)}>{n}</a>
                 </li>
               ))}
             </ul>
@@ -199,10 +196,10 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
               </div>
               <h3>진료시간</h3>
               <dl className="ft-time">
-                <dt>평일(월~금)</dt><dd>AM 08:30 - PM 08:00</dd>
-                <dt>토요일</dt><dd>AM 08:30 - PM 01:00</dd>
+                <dt>평일(월~금)</dt><dd>08:30~20:00</dd>
+                <dt>토요일</dt><dd>08:30~13:00</dd>
               </dl>
-              <p className="ft-note">※ 점심시간 PM&nbsp;12:30 - PM&nbsp;02:00, 접수마감 평일 PM&nbsp;07:30 / 토 PM&nbsp;12:30, 일요일과 공휴일 휴진</p>
+              <p className="ft-note">※ 점심시간 12:30 - 14:00, 접수마감 평일 19:30 / 토 12:30, 일요일과 공휴일 휴진</p>
               <h3>상담안내</h3>
               <a className="ft-phone" href={TEL_LINK}><span><IconPhone /></span>{TEL}</a>
             </div>
@@ -230,7 +227,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
 
       {/* desktop: tab rides up on a 105px strip of three actions (same interaction as the reference) */}
       <div className={"cs-wrap" + (consultOpen ? " open" : "")}>
-        <button className="cs-tab" onClick={toggleConsult} aria-expanded={consultOpen} aria-controls="cs-options">
+        <button className="cs-tab" onClick={() => setConsultOpen((v) => !v)} aria-expanded={consultOpen} aria-controls="cs-options">
           상담하기
           <span className="cs-tab-chevron"><IconChevron /></span>
         </button>
@@ -238,7 +235,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
           <div className="cs-actions">
             <a className="cs-action" href={KAKAO_CHANNEL} {...EXT}><IconChat /><span>카카오톡 상담</span></a>
             <a className="cs-action" href={TEL_LINK}><IconPhone /><span>전화 상담</span></a>
-            <button type="button" className="cs-action" onClick={openForm}><IconEdit /><span>빠른 상담 신청</span></button>
+            <button type="button" className="cs-action" onClick={() => formRef.current?.showModal()}><IconEdit /><span>빠른 상담 신청</span></button>
           </div>
         </div>
       </div>
@@ -248,9 +245,9 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
           <h3>빠른 상담 신청</h3>
           <button type="button" className="cs-close" onClick={() => formRef.current?.close()} aria-label="닫기">×</button>
           <div className="cs-inputs">
-            <input name="name" placeholder="이름" required maxLength={30} autoFocus />
-            <input name="tel" type="tel" placeholder="연락처" required maxLength={14} pattern="[0-9\-]{9,14}" title="숫자와 하이픈(-)만 입력해 주세요" />
-            <select name="item" required defaultValue="">
+            <input name="name" aria-label="이름" placeholder="이름" required maxLength={30} autoFocus />
+            <input name="tel" type="tel" aria-label="연락처" placeholder="연락처" required maxLength={14} pattern="[0-9\-]{9,14}" title="숫자와 하이픈(-)만 입력해 주세요" />
+            <select name="item" aria-label="상담항목" required defaultValue="">
               <option value="" disabled hidden>상담항목</option>
               {Object.entries(CONSULT).map(([group, opts]) => (
                 <optgroup key={group} label={group}>
@@ -271,7 +268,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
         </form>
       </dialog>
 
-      <nav className="mb-tabbar">
+      <nav className="mb-tabbar" aria-label="하단 바로가기">
         <a className="mb-tab" href={TEL_LINK}><IconPhone /><span>전화</span></a>
         <a className="mb-tab" href={PLACE} {...EXT}><IconPin /><span>플레이스</span></a>
         <a className="mb-tab" href={KAKAO_CHANNEL} {...EXT}><IconChat /><span>카카오톡 상담</span></a>

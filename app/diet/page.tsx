@@ -1,5 +1,5 @@
-import Faq from "../faq";
-import { pageMeta, TEL, TEL_LINK } from "../site";
+import Faq, { SubHero, Head, Cta, Notice } from "../faq";
+import { pageMeta } from "../site";
 
 export const metadata = pageMeta(
   "/diet",
@@ -7,7 +7,7 @@ export const metadata = pageMeta(
   "논산 강경 다이어트 한의원 광명당한의원. 붓기형, 식욕폭주형, 냉증형 등 비만 유형과 체질을 진단해 체질에 맞는 다이어트 한약을 처방하고, 굶지 않는 식단과 생활 관리도 안내합니다."
 );
 
-const TABS = [["type", "비만 유형"], ["program", "프로그램과 비용"], ["process", "진료 과정"], ["faq", "자주 묻는 질문"]];
+const TABS: [string, string][] = [["type", "비만 유형"], ["program", "프로그램과 비용"], ["process", "진료 과정"], ["faq", "자주 묻는 질문"]];
 const TYPES = [
   ["붓기형", "몸속 수분 순환이 더뎌 아침저녁으로 잘 붓고 하체가 무겁습니다. 순환과 배출을 돕는 약재를 중심으로 처방합니다."],
   ["식욕폭주형", "스트레스를 받거나 밤이 되면 식욕이 치솟아 폭식을 되풀이합니다. 식욕과 위의 열을 조절하는 데 초점을 둡니다."],
@@ -34,36 +34,20 @@ const FAQ = [
 export default function Diet() {
   return (
     <main>
-      <section className="sub-hero photo">
-        <picture><source media="(min-width: 768px)" srcSet="/img/diet-wide.jpg" /><img className="sub-hero-img" src="/img/herbs.jpg" alt="" style={{ objectPosition: "50% 30%" }} /></picture>
-        <div className="sub-hero-inner">
-          <div data-aos>
-            <h1><span className="sub-label gm">논산 다이어트 한의원</span> 굶지 않고,<br /> <b>체질에 맞게 관리합니다</b></h1>
-            <p>살이 찌는 이유는 사람마다 다릅니다.<br className="pc" /> 광명당한의원은 비만 유형과 체질을 먼저 진단한 뒤,<br className="pc" /> 그에 맞는 한약으로 식욕과 대사를 관리합니다.</p>
-            <ul className="ht-tabs">{TABS.map(([id, t]) => <li key={id}><a href={"#" + id}>{t}</a></li>)}</ul>
-          </div>
-        </div>
-      </section>
+      <SubHero img="/img/herbs.jpg" wide="/img/diet-wide.jpg" pos="50% 30%" tabs={TABS}>
+        <h1><span className="sub-label">논산 다이어트 한의원</span> 굶지 않고,<br /> <b>체질에 맞게 관리합니다</b></h1>
+        <p>살이 찌는 이유는 사람마다 다릅니다.<br className="pc" /> 광명당한의원은 비만 유형과 체질을 먼저 진단한 뒤,<br className="pc" /> 그에 맞는 한약으로 식욕과 대사를 관리합니다.</p>
+      </SubHero>
 
       <section id="type" className="sub-cat">
-        <div className="sub-cat-head" data-aos>
-          <div>
-            <h2>비만 유형별 맞춤 처방</h2>
-          </div>
-          <p>같은 체중이라도 살이 찌는 원인이 다르면 처방도 달라야 합니다.</p>
-        </div>
+        <Head title="비만 유형별 맞춤 처방" lead="같은 체중이라도 살이 찌는 원인이 다르면 처방도 달라야 합니다." />
         <ul className="sub-cards" data-aos>
           {TYPES.map(([t, d]) => <li key={t}><h3>{t}</h3><p>{d}</p></li>)}
         </ul>
       </section>
 
       <section id="program" className="sub-cat">
-        <div className="sub-cat-head" data-aos>
-          <div>
-            <h2>프로그램과 비용</h2>
-          </div>
-          <p>체질 진단 후 기간과 목표에 맞춰 프로그램을 정합니다.</p>
-        </div>
+        <Head title="프로그램과 비용" lead="체질 진단 후 기간과 목표에 맞춰 프로그램을 정합니다." />
         {PROGRAMS.map((it) => (
           <div key={it.name} className="sub-item" data-aos>
             <div>
@@ -72,19 +56,14 @@ export default function Diet() {
               <ul className="sub-tags">{it.tags.map((t) => <li key={t}>{t}</li>)}</ul>
             </div>
             <dl className="sub-price">
-              {it.prices.map(([k, v]) => <div key={k}><dt>{k}</dt><dd className="gm">{v}</dd></div>)}
+              {it.prices.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
             </dl>
           </div>
         ))}
       </section>
 
       <section id="process" className="sub-cat">
-        <div className="sub-cat-head" data-aos>
-          <div>
-            <h2>진료 과정</h2>
-          </div>
-          <p>감량보다 유지가 더 어렵습니다. 그래서 처방과 함께 생활 관리까지 챙깁니다.</p>
-        </div>
+        <Head title="진료 과정" lead="감량보다 유지가 더 어렵습니다. 그래서 처방과 함께 생활 관리까지 챙깁니다." />
         <ol className="sub-steps" data-aos>
           {STEPS.map(([t, d]) => <li key={t}><h3>{t}</h3><p>{d}</p></li>)}
         </ol>
@@ -92,20 +71,13 @@ export default function Diet() {
 
       <Faq items={FAQ} />
 
-      <section className="sub-notice">
-        <h3>비용 및 복용 안내</h3>
-        <ul>
-          <li>표시된 금액은 비급여 진료비이며, 체질과 처방에 따라 달라질&nbsp;수&nbsp;있습니다.</li>
-          <li>한약 복용 중 두근거림, 불면, 소화 불편 등이 생기면 복용을 멈추고 연락해 주세요.</li>
-          <li>감량 정도와 기간에는 개인차가 있습니다.</li>
-        </ul>
-      </section>
+      <Notice title="비용 및 복용 안내" items={[
+        "표시된 금액은 비급여 진료비이며, 체질과 처방에 따라 달라질\u00A0수\u00A0있습니다.",
+        "한약 복용 중 두근거림, 불면, 소화 불편 등이 생기면 복용을 멈추고 연락해 주세요.",
+        "감량 정도와 기간에는 개인차가 있습니다.",
+      ]} />
 
-      <section className="sub-cta">
-        <h2>나에게 맞는 다이어트가 궁금하다면</h2>
-        <p>체질을 진단한 뒤 알맞은 프로그램을 알려 드립니다.</p>
-        <a href={TEL_LINK}>{TEL} 전화 상담</a>
-      </section>
+      <Cta title="나에게 맞는 다이어트가 궁금하다면" text="체질을 진단한 뒤 알맞은 프로그램을 알려 드립니다." />
     </main>
   );
 }

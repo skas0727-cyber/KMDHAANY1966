@@ -1,6 +1,6 @@
 /* /admin: internal tool, not the public site — reuses root color vars (black/white/blue/neutrals) from globals.css */
 
-.ad-root { min-height: 100vh; background: var(--white); font-size: 15px; line-height: 1.6; }
+.ad-root { min-height: 100vh; font-size: 15px; line-height: 1.6; }
 
 /* ---- login ---- */
 .ad-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
@@ -58,7 +58,7 @@
 .ad-delete:hover { border-color: var(--black); color: var(--black); }
 
 /* status chip (also the editable select) */
-.ad-chip { padding: 5px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; font: inherit; }
+.ad-chip { padding: 5px 12px; border-radius: 999px; font: inherit; }
 .ad-chip-new { background: var(--blue); border: 1px solid var(--blue); color: var(--white); }
 .ad-chip-in_progress { background: var(--white); border: 1px solid var(--blue); color: var(--blue); }
 .ad-chip-done { background: var(--border); border: 1px solid var(--border); color: var(--gray); }

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, ReactNode } from "react";
-import { IMG, BLOG, PLACE } from "./site";
+import { BLOG, PLACE } from "./site";
 import { CATEGORIES, PROGRAMS } from "./programs";
 import Faq from "./faq";
 import "./home.css";
@@ -14,7 +14,7 @@ const CARDS: [string, string, string, string?][] = [ // [image, title, link, obj
   ["skin/hero-model.jpg", "피부\n클리닉", "/skin"],
   ["room-spine.jpg", "추나요법\n척추와 관절", "#pain"],
   ["needle.jpg", "침과 약침\n통증 치료", "#pain"],
-  ["ulforce.jpg", "체외충격파\n고주파 치료", "#pain"],
+  ["ulforce.jpg", "체외충격파\n고주파 치료", "/treatment#care"],
   ["exterior.jpg", "SINCE 1966\n3대째 한의원", "#story"],
   ["lobby-wide.jpg", "오시는 길\n진료시간", "#location", "left center"],
 ];
@@ -48,13 +48,13 @@ const TREAT: [string, Slide[]][] = [
   ]],
   ["치료 장비", [
     ["ultrasound2.jpg", "초음파 진단", "통증 부위를 직접 보며 상태를 확인합니다."],
-    ["rafos.jpg", "고주파 심부열 (RAFOS)", "깊은 곳까지 열을 전달해 뭉친 근육의 이완을 돕습니다."],
-    ["ulforce.jpg", "체외충격파 (울포스)", "충격파로 힘줄과 근육의 만성 통증 관리를 돕습니다."],
+    ["rafos.jpg", "고주파 심부열 (RAFOS)", "깊은 곳까지 열을 전달해 뭉친 근육의 이완을 돕습니다.", "/treatment#care"],
+    ["ulforce.jpg", "체외충격파 (울포스)", "충격파로 힘줄과 근육의 만성 통증 관리를 돕습니다.", "/treatment#care"],
   ]],
 ];
 const SPECIAL: [string, string, ReactNode, string, string][] = [
   ["exterior-wide.jpg", "3대째 이어온 한의원", <>1966년 강경의 한약방에서 시작해<br /><strong>3대째 지역 주민의 건강</strong>을 살피고 있습니다.</>, "병원 이야기 보기", "#story"],
-  ["ultrasound2.jpg", "보면서 하는 진료", <>통증 부위를 <strong>초음파로 직접 보며</strong><br />상태를 확인하고 치료합니다.</>, "치료 장비 보기", "#pain"],
+  ["ultrasound2.jpg", "보면서 하는 진료", <>통증 부위를 <strong>초음파로 직접 보며</strong><br />상태를 확인하고 치료합니다.</>, "치료 장비 보기", "/treatment#care"],
   ["rafos-use.jpg", "치료 장비 보유", <><strong>고주파 심부열과 체외충격파</strong> 장비로<br />깊은 곳의 통증까지 관리합니다.</>, "통증 치료 보기", "#pain"],
   ["lobby2.jpg", "자동차보험 협약 의료기관", <>전 보험사 자동차보험이 적용되어<br /><strong>본인부담금 0원</strong>으로 치료받을&nbsp;수&nbsp;있습니다.</>, "교통사고 치료 보기", "/accident"],
 ];
@@ -78,10 +78,10 @@ function useAuto(ms: number, next: () => void, dep: unknown, paused = false) {
   }, [dep, paused]); // eslint-disable-line react-hooks/exhaustive-deps
 }
 
-function Head({ title, sub, cls = "" }: { title: string; sub: ReactNode; cls?: string }) {
+function Head({ title, sub }: { title: string; sub: ReactNode }) {
   return (
-    <div className={"hs-head " + cls}>
-      <h2 className="gm">{title}</h2>
+    <div className="hs-head">
+      <h2>{title}</h2>
       <p>{sub}</p>
     </div>
   );
@@ -124,7 +124,7 @@ function Hero() {
           return (
             <li key={idx} className={d === 0 ? "on" : d === 1 ? "near" : undefined} aria-hidden={clone || undefined}>
               <a href={href} tabIndex={clone ? -1 : undefined} draggable={false}>
-                <img src={IMG + img} alt="" draggable={false} style={pos ? { objectPosition: pos } : undefined} />
+                <img src={"/img/" + img} alt="" draggable={false} style={pos ? { objectPosition: pos } : undefined} />
                 <div><p className="hc-t">{title}</p><p className="hc-d">바로가기 &gt;</p></div>
               </a>
             </li>
@@ -157,7 +157,7 @@ function Price() {
       <div className="pr-body" key={tab}>
         <a className="pr-main" href={`/program/${progs[0].slug}`}>
           {/* own 3:2 shot per category (model in the right 45%): desktop crops to the model, mobile shows the wide frame */}
-          <img src={`${IMG}skin/price-${CATEGORIES[tab][0]}.jpg`} alt="" loading="lazy" />
+          <img src={`/img/skin/price-${CATEGORIES[tab][0]}.jpg`} alt="" loading="lazy" />
           <div className="pr-overlay">
             <strong>{CATEGORIES[tab][1]}</strong>
             <p>{progs[0].summary}</p>
@@ -174,7 +174,7 @@ function Price() {
                     return (
                       <li key={k}>
                         <div className="pr-left">
-                          <span className={"pr-num" + (no <= 3 ? " top" : "")}>{no}</span>
+                          <span className="pr-num">{no}</span>
                           <span className="pr-name">{o.name} <em>{o.spec}</em></span>
                         </div>
                         <div className="pr-price">{o.orig && <del>{o.orig}</del>}<b>{o.price}</b></div>
@@ -208,7 +208,7 @@ function Story() {
     <section id="story" className="hs st">
       <Head title="광명당 이야기" sub="1966년부터 이어 온 광명당한의원을 소개합니다" />
       <div className="st-tabs">
-        {STORY.map(([name], k) => <button key={name} className={k === tab ? "on" : undefined} onClick={() => { setTab(k); setI(0); }}>{name}</button>)}
+        {STORY.map(([name], k) => <button key={name} className={k === tab ? "on" : undefined} aria-pressed={k === tab} onClick={() => { setTab(k); setI(0); }}>{name}</button>)}
       </div>
       <div className="st-body" key={tab}>
         <div className="st-slider">
@@ -217,7 +217,7 @@ function Story() {
             <div className="st-track" style={{ transform: `translateX(-${i * 100}%)` }}>
               {slides.map(([img, t, , href]) => (
                 <div key={t} className="st-slide">
-                  {href ? <a href={href} target="_blank" rel="noreferrer"><img src={IMG + img} alt={t} loading="lazy" /></a> : <img src={IMG + img} alt={t} loading="lazy" />}
+                  {href ? <a href={href} target="_blank" rel="noreferrer"><img src={"/img/" + img} alt={t} loading="lazy" /></a> : <img src={"/img/" + img} alt={t} loading="lazy" />}
                 </div>
               ))}
             </div>
@@ -243,7 +243,7 @@ function Treat() {
       <Head title="주요 진료" sub="광명당한의원이 집중하는 진료입니다" />
       <div className="tr-top">
         <div className="tr-tabs">
-          {TREAT.map(([name], k) => <button key={name} className={k === tab ? "on" : undefined} onClick={() => pick(k)}>{name}</button>)}
+          {TREAT.map(([name], k) => <button key={name} className={k === tab ? "on" : undefined} aria-pressed={k === tab} onClick={() => pick(k)}>{name}</button>)}
         </div>
       </div>
       <div className="tr-slider">
@@ -253,7 +253,7 @@ function Treat() {
             {cards.map(([img, name, desc, href], k) => {
               const body = (
                 <>
-                  <div className="tr-img"><img src={IMG + img} alt={name} loading="lazy" /></div>
+                  <div className="tr-img"><img src={"/img/" + img} alt={name} loading="lazy" /></div>
                   <div className="tr-info"><b>{name}</b><p>{desc}</p></div>
                 </>
               );
@@ -290,7 +290,7 @@ function Greeting() {
         <div className="bn-imgs">
           {DOCTORS.map(([img, title, name]) => (
             <figure key={name}>
-              {img ? <img src={IMG + img} alt={`${title} ${name}`} loading="lazy" /> : <div className="bn-ph">원장 사진</div>}
+              {img ? <img src={"/img/" + img} alt={`${title} ${name}`} loading="lazy" /> : <div className="bn-ph">원장 사진</div>}
               <figcaption><span>{title}</span> {name}</figcaption>
             </figure>
           ))}
@@ -303,15 +303,16 @@ function Greeting() {
 // reference "Special" block: fade slider (300ms, autoplay 3.5s, loop) with a floating text box carrying the bullets
 function Special() {
   const [i, setI] = useState(0);
-  useAuto(3500, () => setI((i + 1) % SPECIAL.length), i);
+  const [hold, setHold] = useState(false);
+  useAuto(3500, () => setI((i + 1) % SPECIAL.length), i, hold);
 
   return (
-    <section className="hs sp">
+    <section className="hs sp" onMouseEnter={() => setHold(true)} onMouseLeave={() => setHold(false)} onFocus={() => setHold(true)} onBlur={() => setHold(false)}>
       <Head title="광명당만의 특별함" sub="처음 오시는 분께 먼저 알려 드리고 싶은 점입니다" />
       <div className="sp-slider">
         {SPECIAL.map(([img, title, text, more, href], k) => (
           <div key={title} className={"sp-slide" + (k === i ? " on" : "")} inert={k !== i}>
-            <img src={IMG + img} alt="" loading="lazy" />
+            <img src={"/img/" + img} alt="" loading="lazy" />
             <div className="sp-box">
               <div className="sp-dots">
                 {SPECIAL.map(([, t], b) => <button key={t} className={b === i ? "on" : undefined} onClick={() => setI(b)} aria-label={t} />)}

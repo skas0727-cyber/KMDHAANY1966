@@ -18,7 +18,7 @@
 .pv-opts { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 .pv-opts li { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border); }
 .pv-opts b { font-size: 15px; font-weight: 600; }
-.pv-badge { display: inline-block; margin-left: 6px; padding: 3px 8px; border-radius: 999px; background: var(--white); border: 1px solid var(--blue); color: var(--blue); font-size: 12px; font-weight: 500; vertical-align: 2px; }
+.pv-badge { display: inline-block; margin-left: 6px; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--blue); color: var(--blue); font-size: 12px; font-weight: 500; vertical-align: 2px; }
 .pv-spec { display: block; margin-top: 4px; font-size: 12px; line-height: 1.5; color: var(--gray-light); }
 .pv-cost { flex: none; text-align: right; }
 .pv-cost del { display: block; margin-bottom: 2px; font-size: 12px; color: var(--gray-light); }
@@ -31,7 +31,7 @@
 .pv-body { grid-area: body; }
 .pv-body .sub-cat { max-width: none; padding: 100px 0 0; }
 .pv-body .sub-notice { width: auto; margin-left: 0; margin-right: 0; }
-.pv-body .sub-notice h2 { margin-bottom: 14px; font-size: 18px; font-weight: 600; }
+.pv-body .sub-notice h3 { font-weight: 600; }
 .pv-rec { margin-top: 8px; list-style: none; counter-reset: rec; }
 .pv-rec li { display: flex; align-items: baseline; gap: 24px; padding: 22px 0; font-size: 18px; line-height: 1.6; counter-increment: rec; }
 .pv-rec li::before { content: counter(rec, decimal-leading-zero); flex: none; font-size: 15px; letter-spacing: 1px; color: var(--gray-light); }
@@ -64,13 +64,11 @@
   .pv-card h3 { font-size: 17px; }
   .pv-card h3 + p { font-size: 13px; }
   .pv-more { padding-top: 16px; }
+  .pv-all::after, .pv-crumb a::after { content: ""; position: absolute; inset: -12px -6px; }
 }
 
 @media (max-width: 767px) {
   .pv-opts b { font-size: 14px; }
   .pv-cost strong { font-size: 17px; }
   .pv-rec li { font-size: 15px; }
-}
-@media (max-width: 1024px) {
-  .pv-all::after, .pv-crumb a::after { content: ""; position: absolute; inset: -12px -6px; }
 }

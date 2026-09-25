@@ -1,5 +1,5 @@
-import Faq from "../faq";
-import { pageMeta, TEL, TEL_LINK } from "../site";
+import Faq, { SubHero, Head, Cta, Notice } from "../faq";
+import { pageMeta } from "../site";
 
 export const metadata = pageMeta(
   "/accident",
@@ -7,7 +7,7 @@ export const metadata = pageMeta(
   "논산 강경 교통사고 한의원 광명당한의원. 자동차보험 협약 의료기관으로 전 보험사 자동차보험이 적용되어 본인부담금 없이 침과 약침, 추나요법, 한약, 한방물리요법을 받을 수 있습니다. 사고 당일 내원 가능, 평일 야간진료."
 );
 
-const TABS = [["symptom", "이런 증상"], ["treatment", "치료 방법"], ["process", "진료 절차"], ["faq", "자주 묻는 질문"]];
+const TABS: [string, string][] = [["symptom", "이런 증상"], ["treatment", "치료 방법"], ["process", "진료 절차"], ["faq", "자주 묻는 질문"]];
 const SYMPTOMS = [
   ["목과 어깨 통증", "목이 뻣뻣하고 어깨가 결리며 고개를 돌리기 힘듭니다.", "neck-shoulder"],
   ["허리 통증", "허리가 뻐근하고 오래 앉아 있거나 서\u00A0있기 힘듭니다.", "lower-back"],
@@ -39,16 +39,10 @@ const FAQ = [
 export default function Accident() {
   return (
     <main>
-      <section className="sub-hero photo">
-        <picture><source media="(min-width: 768px)" srcSet="/img/accident-wide.jpg" /><img className="sub-hero-img" src="/img/backpain.jpg" alt="" style={{ objectPosition: "50% 45%" }} /></picture>
-        <div className="sub-hero-inner">
-          <div data-aos>
-            <h1><span className="sub-label gm">논산 교통사고 한의원</span> 사고 후 통증,<br /> <b>초기 치료가 중요합니다</b></h1>
-            <p>교통사고 직후에는 괜찮다가 며칠 뒤 통증이 시작되는 경우가 많습니다.<br className="pc" /> 자동차보험 협약 의료기관인 광명당한의원에서는<br className="pc" /> 본인부담금 없이 한방 치료를 받을&nbsp;수&nbsp;있습니다.</p>
-            <ul className="ht-tabs">{TABS.map(([id, t]) => <li key={id}><a href={"#" + id}>{t}</a></li>)}</ul>
-          </div>
-        </div>
-      </section>
+      <SubHero img="/img/backpain.jpg" wide="/img/accident-wide.jpg" pos="50% 45%" tabs={TABS}>
+        <h1><span className="sub-label">논산 교통사고 한의원</span> 사고 후 통증,<br /> <b>초기 치료가 중요합니다</b></h1>
+        <p>교통사고 직후에는 괜찮다가 며칠 뒤 통증이 시작되는 경우가 많습니다.<br className="pc" /> 자동차보험 협약 의료기관인 광명당한의원에서는<br className="pc" /> 본인부담금 없이 한방 치료를 받을&nbsp;수&nbsp;있습니다.</p>
+      </SubHero>
 
       <section className="sub-intro" data-aos>
         <h2>자동차보험 협약 의료기관,<br /><span>본인부담금 0원</span>으로 치료받는<br />논산 교통사고 한의원입니다.</h2>
@@ -56,36 +50,21 @@ export default function Accident() {
       </section>
 
       <section id="symptom" className="sub-cat">
-        <div className="sub-cat-head" data-aos>
-          <div>
-            <h2>이런 증상이 있다면</h2>
-          </div>
-          <p>영상 검사에서 이상이 없어도 사고 충격으로 근육과 인대가 놀라 통증이 남을&nbsp;수&nbsp;있습니다. 가벼운 증상이라도 진료를 받아 보세요.</p>
-        </div>
+        <Head title="이런 증상이 있다면" lead="영상 검사에서 이상이 없어도 사고 충격으로 근육과 인대가 놀라 통증이 남을&nbsp;수&nbsp;있습니다. 가벼운 증상이라도 진료를 받아 보세요." />
         <ul className="sub-cards" data-aos>
           {SYMPTOMS.map(([t, d, image]) => <li key={t}><img src={"/img/accident/" + image + ".jpg"} alt={t + " 증상 설명 이미지"} width={1448} height={1086} style={{ height: "auto" }} loading="lazy" /><h3>{t}</h3><p>{d}</p></li>)}
         </ul>
       </section>
 
       <section id="treatment" className="sub-cat">
-        <div className="sub-cat-head" data-aos>
-          <div>
-            <h2>치료 방법</h2>
-          </div>
-          <p>아픈 부위뿐 아니라 사고로 생긴 어혈과 틀어진 몸의 균형까지 함께 살펴 치료합니다.</p>
-        </div>
+        <Head title="치료 방법" lead="아픈 부위뿐 아니라 사고로 생긴 어혈과 틀어진 몸의 균형까지 함께 살펴 치료합니다." />
         <ul className="sub-cards" style={{ "--cols": 4 } as React.CSSProperties} data-aos>
           {TREATMENTS.map(([img, t, d]) => <li key={t}><img src={"/img/" + img} alt={"교통사고 " + t} loading="lazy" /><h3>{t}</h3><p>{d}</p></li>)}
         </ul>
       </section>
 
       <section id="process" className="sub-cat">
-        <div className="sub-cat-head" data-aos>
-          <div>
-            <h2>진료 절차</h2>
-          </div>
-          <p>사고 접수번호만 있으면 복잡한 절차 없이 바로 치료를 시작할&nbsp;수&nbsp;있습니다.</p>
-        </div>
+        <Head title="진료 절차" lead="사고 접수번호만 있으면 복잡한 절차 없이 바로 치료를 시작할&nbsp;수&nbsp;있습니다." />
         <ol className="sub-steps" data-aos>
           {STEPS.map(([t, d]) => <li key={t}><h3>{t}</h3><p>{d}</p></li>)}
         </ol>
@@ -93,21 +72,14 @@ export default function Accident() {
 
       <Faq items={FAQ} />
 
-      <section className="sub-notice">
-        <h3>교통사고 진료 안내</h3>
-        <ul>
-          <li>자동차보험 치료 시 보험사 사고 접수번호가 필요합니다.</li>
-          <li>치료 기간과 경과는 사고 정도와 개인에 따라 다릅니다.</li>
-          <li>약침과 추나 등 치료 후 일시적인 뻐근함이나 멍이 생길&nbsp;수&nbsp;있습니다.</li>
-          <li>추나요법, 체외충격파, 고주파 치료는 예약제로 운영합니다.</li>
-        </ul>
-      </section>
+      <Notice title="교통사고 진료 안내" items={[
+        "자동차보험 치료 시 보험사 사고 접수번호가 필요합니다.",
+        "치료 기간과 경과는 사고 정도와 개인에 따라 다릅니다.",
+        "약침과 추나 등 치료 후 일시적인 뻐근함이나 멍이 생길\u00A0수\u00A0있습니다.",
+        "추나요법, 체외충격파, 고주파 치료는 예약제로 운영합니다.",
+      ]} />
 
-      <section className="sub-cta">
-        <h2>사고 후 통증, 미루지 마세요</h2>
-        <p>사고 접수번호만 있으면 오늘 바로 치료받을&nbsp;수&nbsp;있습니다.</p>
-        <a href={TEL_LINK}>{TEL} 전화 상담</a>
-      </section>
+      <Cta title="사고 후 통증, 미루지 마세요" text="사고 접수번호만 있으면 오늘 바로 치료받을&nbsp;수&nbsp;있습니다." />
     </main>
   );
 }

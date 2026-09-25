@@ -40,8 +40,10 @@ const clinic = {
     ["교통사고 후유증 치료", "/accident"],
     ["한방 다이어트", "/diet"],
     ["피부 관리 (슈링크, 토닝, 점 제거)", "/skin"],
-    ["추나요법", "/#pain"],
-    ["침과 약침", "/#pain"],
+    ["한약 (보약, 치료약)", "/treatment"],
+    ["추나요법", "/treatment#care"],
+    ["침", "/treatment#care"],
+    ["약침", "/treatment#care"],
   ].map(([name, path]) => ({ "@type": "MedicalTherapy", name, url: SITE_URL + path })),
   sameAs: [BLOG, PLACE],
 };

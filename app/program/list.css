@@ -1,8 +1,5 @@
 /* /program list page (hero reuses global .sub-hero.photo) */
 .pl { max-width: 1260px; margin: 0 auto; padding: 80px 20px 0; }
-.pl-chips button { padding: 10px 22px; border: 1px solid var(--border); border-radius: 999px; font-size: 15px; color: var(--black); white-space: nowrap; transition: .3s; }
-.pl-chips button:hover { border-color: var(--blue); }
-.pl-chips .pl-on { background: var(--blue); border-color: var(--blue); color: var(--white); }
 .pl-concern { padding: 32px 36px; border-radius: 20px; background: var(--white); border: 1px solid var(--border); }
 .pl-q { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .pl-q p { font-size: 18px; font-weight: 500; }
@@ -10,14 +7,15 @@
 .pl-reset { font-size: 14px; color: var(--gray-light); text-decoration: underline; text-underline-offset: 3px; }
 .pl-reset:hover { color: var(--blue); }
 .pl-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-.pl-chips button { padding: 8px 18px; background: var(--white); font-size: 14px; }
+.pl-chips button { padding: 8px 18px; border: 1px solid var(--border); border-radius: 999px; font-size: 14px; color: var(--black); white-space: nowrap; transition: .3s; }
+.pl-chips button:hover { border-color: var(--blue); }
+.pl-chips .pl-on { background: var(--blue); border-color: var(--blue); color: var(--white); }
 .pl-count { margin-top: 50px; padding-bottom: 20px; font-size: 15px; color: var(--gray); }
 .pl-count b { font-weight: 700; color: var(--blue); }
 .pl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 30px; }
 .pl-card { display: flex; flex-direction: column; height: 100%; overflow: hidden; border: 1px solid var(--border); border-radius: 20px; background: var(--white); transition: transform .3s, box-shadow .3s; }
 .pl-card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0, 0, 0, .1); }
-.pl-top { display: flex; flex-direction: column; justify-content: space-between; gap: 20px; padding: 26px 28px; background: var(--white); }
-.pl-cat { font-size: 13px; color: var(--gray-light); }
+.pl-cat { display: block; padding: 26px 28px; font-size: 13px; color: var(--gray-light); }
 .pl-body { flex: 1; display: flex; flex-direction: column; padding: 28px; }
 .pl-body h2 { font-size: var(--fs-title); line-height: var(--lh-title); font-weight: var(--fw-title); letter-spacing: var(--ls-title); }
 .pl-body > p { margin-top: 10px; font-size: 15px; line-height: 1.7; color: var(--gray); }
@@ -36,14 +34,13 @@
 
 @media (max-width: 1024px) {
   .pl { padding-top: 50px; }
-  .pl-cats button { padding: 8px 16px; font-size: 14px; }
   .pl-concern { margin-top: 24px; padding: 24px 20px; border-radius: 14px; }
   .pl-q p { font-size: 16px; }
   .pl-chips button { padding: 7px 14px; font-size: 13px; }
   .pl-count { margin-top: 36px; padding-bottom: 14px; font-size: 14px; }
   .pl-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 24px; }
   .pl-card { border-radius: 14px; }
-  .pl-top { padding: 20px 22px; }
+  .pl-cat { padding: 20px 22px; }
   .pl-body { padding: 22px; }
   .pl-body h2 { font-size: 20px; }
   .pl-body > p { font-size: 14px; }

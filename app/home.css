@@ -5,7 +5,7 @@
 
 /* section shell: 120px padding, 60px title / 16px sub, content column 1080px */
 .hs { padding: 120px; }
-.hs-head { margin-bottom: 50px; text-align: center; color: #333; }
+.hs-head { margin-bottom: 50px; text-align: center; }
 .hs-head h2 { font-size: 48px; line-height: 1.3; font-weight: 700; letter-spacing: -1.2px; color: #111; }
 .hs-head p { margin-top: 10px; font-size: 17px; line-height: 1.6; color: #555; }
 
@@ -49,7 +49,6 @@
 .pr-list li:first-child { border-top: 1px solid #d0d0d0; }
 .pr-left { display: flex; align-items: center; gap: 16px; min-width: 0; }
 .pr-num { flex: none; display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; font-size: 20px; line-height: 24px; font-weight: 700; letter-spacing: -1px; color: #222; }
-.pr-num.top { background: #2563eb; color: #fff; }
 .pr-name { font-size: 20px; line-height: 26px; font-weight: 600; letter-spacing: -1px; color: #222; }
 .pr-name em { font-size: 18px; font-style: normal; font-weight: 400; color: #666; }
 .pr-price { flex: none; display: flex; flex-direction: column; align-items: flex-end; margin-left: 12px; }
@@ -160,7 +159,7 @@
   .bn-imgs figure { width: 240px; }
   .sp-box { width: 340px; padding: 25px 25px 60px; }
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .hc { padding: 30px 0 50px; }
   .hc-list { --w: 40%; }
   .hc-t { font-size: 40px; }
@@ -173,8 +172,6 @@
   .st-arrow span { width: 25px; height: 25px; font-size: 16px; }
   .st-body h3 { font-size: 18px; line-height: 20.7px; letter-spacing: -.36px; }
   .st-body p { font-size: 14px; line-height: 21px; }
-}
-@media (max-width: 767px) {
   .hs { padding: 60px 10px; }
   .tr-top { width: 100%; } /* phones: same segmented tabs as desktop, four equal slots */
   .tr-tabs button { flex: 1; padding: 11px 0; font-size: 14px; }
