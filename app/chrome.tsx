@@ -147,7 +147,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
       </header>
 
       <div id="hd-menu" className={"mn" + (menuOpen ? " is-open" : "")} role="dialog" aria-modal="true" aria-label="전체메뉴" inert={!menuOpen}>
-        <div className="mn-left"><img src={IMG + "lobby.jpg"} alt="" loading="lazy" /></div>
+        <div className="mn-left"><img src={IMG + "lobby-wide.jpg"} alt="" loading="lazy" /></div>
         <div className="mn-right">
           <button type="button" className="mn-close" onClick={() => setMenuOpen(false)} aria-label="메뉴 닫기">
             <svg viewBox="0 0 36 36" fill="none" aria-hidden="true"><line x1="6" y1="6" x2="30" y2="30" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /><line x1="30" y1="6" x2="6" y2="30" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
@@ -212,7 +212,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
           <div className="ft-row">
             <div>
               <p className="ft-name">광명당한의원 <span>대표 남인우</span></p>
-              <p className="ft-biz"><span>{ADDRESS}</span><span>사업자등록번호 000-00-00000</span><span>전화 {TEL}</span></p>
+              <p className="ft-biz"><span>{ADDRESS}</span><span>사업자등록번호 501-06-66851</span><span>전화 {TEL}</span></p>
             </div>
             <button className="ft-prv" onClick={() => (document.getElementById("privacy") as HTMLDialogElement).showModal()}>개인정보처리방침</button>
           </div>

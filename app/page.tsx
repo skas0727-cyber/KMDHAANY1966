@@ -8,7 +8,7 @@ import "./home.css";
 
 // section order + measurements follow the reference home (card hero → tabbed price → magazine → card carousel → greeting → special);
 // all copy and photos are the clinic's own. Title strings use \n for line breaks (white-space: pre-line).
-const CARDS: [string, string, string][] = [
+const CARDS: [string, string, string, string?][] = [ // [image, title, link, object-position]
   ["backpain.jpg", "교통사고\n후유증 치료", "/accident"],
   ["herbs.jpg", "체질 맞춤\n한방 다이어트", "/diet"],
   ["skin/hero-model.jpg", "피부\n클리닉", "/skin"],
@@ -16,7 +16,7 @@ const CARDS: [string, string, string][] = [
   ["needle.jpg", "침과 약침\n통증 치료", "#pain"],
   ["ulforce.jpg", "체외충격파\n고주파 치료", "#pain"],
   ["exterior.jpg", "SINCE 1966\n3대째 한의원", "#story"],
-  ["lobby.jpg", "오시는 길\n진료시간", "#location"],
+  ["lobby-wide.jpg", "오시는 길\n진료시간", "#location", "left center"],
 ];
 // [image, title, text, link?]
 type Slide = [string, string, string, string?];
@@ -119,12 +119,12 @@ function Hero() {
         }}
         onClickCapture={(e) => dragged.current && (e.preventDefault(), (dragged.current = false))}
       >
-        {[0, 1, 2].flatMap((copy) => CARDS.map(([img, title, href], k) => {
+        {[0, 1, 2].flatMap((copy) => CARDS.map(([img, title, href, pos], k) => {
           const idx = copy * n + k, d = Math.abs(idx - i), clone = copy !== 1;
           return (
             <li key={idx} className={d === 0 ? "on" : d === 1 ? "near" : undefined} aria-hidden={clone || undefined}>
               <a href={href} tabIndex={clone ? -1 : undefined} draggable={false}>
-                <img src={IMG + img} alt="" draggable={false} />
+                <img src={IMG + img} alt="" draggable={false} style={pos ? { objectPosition: pos } : undefined} />
                 <div><p className="hc-t">{title}</p><p className="hc-d">바로가기 &gt;</p></div>
               </a>
             </li>
