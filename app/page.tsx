@@ -12,8 +12,8 @@ const CARDS: [string, string, string][] = [
   ["backpain.jpg", "교통사고\n후유증 치료", "/accident"],
   ["herbs.jpg", "체질 맞춤\n한방 다이어트", "/diet"],
   ["skin/hero-model.jpg", "피부\n클리닉", "/skin"],
-  ["room-spine.jpg", "추나요법\n척추·관절", "#pain"],
-  ["needle.jpg", "침·약침\n통증 치료", "#pain"],
+  ["room-spine.jpg", "추나요법\n척추와 관절", "#pain"],
+  ["needle.jpg", "침과 약침\n통증 치료", "#pain"],
   ["ulforce.jpg", "체외충격파\n고주파 치료", "#pain"],
   ["exterior.jpg", "SINCE 1966\n3대째 한의원", "#story"],
   ["lobby.jpg", "오시는 길\n진료시간", "#location"],
@@ -22,48 +22,48 @@ const CARDS: [string, string, string][] = [
 type Slide = [string, string, string, string?];
 const STORY: [string, Slide[]][] = [
   ["병원 소개", [
-    ["exterior.jpg", "SINCE 1966, 3대째 이어온 한의원", "1966년 강경에서 문을 연 광명당한약방이 할아버지 남주희 원장에서 손자 남인우 원장으로 이어지며, 3대째 지역 주민의 건강을 살피고 있습니다."],
-    ["lobby.jpg", "전통 한의학에 현대 진단을 더하다", "오랜 전통 한의학에 초음파 진단과 현대 치료 장비를 더해, 한 분 한 분의 체질과 상태에 맞춘 진료를 합니다."],
-    ["ultrasound1.jpg", "대표원장 남인우", "통증 부위를 초음파로 직접 보며 상태를 확인하고, 그에 맞는 치료를 설명해 드립니다."],
+    ["exterior-wide.jpg", "SINCE 1966, 3대째 이어온 한의원", "1966년 강경에서 문을 연 광명당한약방은 할아버지 남주희 원장에서 손자 남인우 원장으로 이어졌습니다. 3대째 지역 주민의 건강을 살피고 있습니다."],
+    ["lobby-wide.jpg", "한의학에 현대 장비를 더한 진료", "침과 추나요법에 고주파와 체외충격파 장비를 더해, 체질과 몸 상태에 맞게 치료합니다."],
+    ["ultrasound1.jpg", "초음파로 보며 치료합니다", "남인우 대표원장이 아픈 곳을 초음파로 직접 확인하고, 상태에 맞는 치료 방법을 정합니다."],
   ]],
-  ["블로그", [["rafos-use.jpg", "광명당한의원 블로그", "진료 이야기와 생활 속 건강 정보를 네이버 블로그에서 전해 드립니다.", BLOG]]],
+  ["블로그", [["rafos-use.jpg", "광명당한의원 블로그", "진료 이야기와 건강 정보를 네이버 블로그에 올리고 있습니다.", BLOG]]],
   ["플레이스", [["lobby2.jpg", "네이버 플레이스", "진료시간, 길찾기, 방문자 리뷰를 네이버 플레이스에서 확인하세요.", PLACE]]],
 ];
 const TREAT: [string, Slide[]][] = [
   ["통증 치료", [
-    ["needle.jpg", "침·약침", "통증 부위의 긴장을 풀고 순환을 도와 통증 완화를 돕습니다."],
-    ["room-spine.jpg", "추나요법", "틀어진 척추·관절의 균형 회복을 돕는 한방 수기 치료입니다."],
-    ["room-healing.jpg", "재활·운동치료", "약해진 근육과 움직임을 되찾도록 운동 치료를 함께 합니다."],
-    ["rafos-use.jpg", "한방물리요법", "온열·전기 자극 등으로 뭉친 근육의 긴장 완화를 돕습니다."],
+    ["treat-needle.jpg", "침과 약침", "아픈 부위의 긴장을 풀고 순환을 좋게 해 통증 완화를 돕습니다."],
+    ["room-spine.jpg", "추나요법", "틀어진 척추와 관절을 손으로 바로잡도록 돕는 한방 치료입니다."],
+    ["room-healing.jpg", "재활과 운동치료", "근력을 기르고 다시 편하게 움직일\u00A0수\u00A0있도록 운동 치료를 함께 합니다."],
+    ["rafos-use.jpg", "한방물리요법", "따뜻한 열과 전기 자극으로 뭉친 근육이 풀리도록 돕습니다."],
   ]],
   ["교통사고", [
-    ["backpain.jpg", "교통사고 후유증", "전 보험사 자동차보험 적용, 본인부담금 0원으로 치료합니다.", "/accident"],
-    ["room-spine.jpg", "사고 후 추나요법", "사고 충격으로 틀어진 척추·관절의 균형 회복을 돕습니다.", "/accident"],
-    ["herbs.jpg", "사고 한약", "사고로 생긴 어혈을 풀고 회복을 돕는 한약을 체질에 맞춰 처방합니다.", "/accident"],
+    ["treat-accident.jpg", "교통사고 후유증", "사고 뒤 생긴 목, 허리 통증과 두통을 본인부담금 0원으로 치료합니다.", "/accident"],
+    ["accident-consult.jpg", "자동차보험 안내", "전 보험사 자동차보험이 적용되며, 접수 방법도 안내해 드립니다.", "/accident"],
+    ["treat-herbal.jpg", "사고 한약", "사고로 생긴 어혈을 풀고 회복을 돕는 한약을 체질에 맞춰 처방합니다.", "/accident"],
   ]],
   ["특화 진료", [
-    ["herbs.jpg", "한방 다이어트", "체질과 비만 유형에 맞춘 처방", "/diet"],
-    ["skin/hero-model.jpg", "피부 클리닉", "슈링크 리프팅·레이저 토닝·점 제거", "/skin"],
-    ["rhinitis.jpg", "비염·감기·안면마비", "면역과 순환을 돕는 한방내과 진료"],
+    ["treat-diet.jpg", "한방 다이어트", "체질과 비만 유형에 맞춘 처방", "/diet"],
+    ["skin/hero-model.jpg", "피부 클리닉", "슈링크 리프팅, 레이저 토닝, 점 제거", "/skin"],
+    ["pulse.jpg", "비염, 감기, 안면마비", "면역과 순환을 돕는 한방내과 진료"],
   ]],
   ["치료 장비", [
     ["ultrasound2.jpg", "초음파 진단", "통증 부위를 직접 보며 상태를 확인합니다."],
     ["rafos.jpg", "고주파 심부열 (RAFOS)", "깊은 곳까지 열을 전달해 뭉친 근육의 이완을 돕습니다."],
-    ["ulforce.jpg", "체외충격파 (울포스)", "충격파로 만성 힘줄·근육 통증 관리를 돕습니다."],
+    ["ulforce.jpg", "체외충격파 (울포스)", "충격파로 힘줄과 근육의 만성 통증 관리를 돕습니다."],
   ]],
 ];
 const SPECIAL: [string, string, ReactNode, string, string][] = [
-  ["exterior.jpg", "3대째 이어온 한의원", <>1966년 강경의 한약방에서 시작해<br /><strong>3대째 지역 주민의 건강</strong>을 살피고 있습니다.</>, "병원 이야기 보기", "#story"],
+  ["exterior-wide.jpg", "3대째 이어온 한의원", <>1966년 강경의 한약방에서 시작해<br /><strong>3대째 지역 주민의 건강</strong>을 살피고 있습니다.</>, "병원 이야기 보기", "#story"],
   ["ultrasound2.jpg", "보면서 하는 진료", <>통증 부위를 <strong>초음파로 직접 보며</strong><br />상태를 확인하고 치료합니다.</>, "치료 장비 보기", "#pain"],
-  ["rafos-use.jpg", "치료 장비 보유", <><strong>고주파 심부열·체외충격파</strong> 장비로<br />깊은 곳의 통증까지 관리합니다.</>, "통증 치료 보기", "#pain"],
-  ["lobby2.jpg", "자동차보험 협약 의료기관", <>전 보험사 자동차보험이 적용되어<br /><strong>본인부담금 0원</strong>으로 치료받을 수 있습니다.</>, "교통사고 치료 보기", "/accident"],
+  ["rafos-use.jpg", "치료 장비 보유", <><strong>고주파 심부열과 체외충격파</strong> 장비로<br />깊은 곳의 통증까지 관리합니다.</>, "통증 치료 보기", "#pain"],
+  ["lobby2.jpg", "자동차보험 협약 의료기관", <>전 보험사 자동차보험이 적용되어<br /><strong>본인부담금 0원</strong>으로 치료받을&nbsp;수&nbsp;있습니다.</>, "교통사고 치료 보기", "/accident"],
 ];
 const FAQ = [
-  ["논산 광명당한의원은 어디에 있나요?", "충남 논산시 강경읍 대흥로6번길 9(지번 강경읍 대흥리 32-120)에 있습니다. 네이버 지도에서 '광명당한의원'을 검색하면 길찾기를 할 수 있습니다."],
-  ["진료시간은 어떻게 되나요?", "월·수·금 08:30~20:00(야간진료), 화·목 08:30~18:00, 토요일 08:30~13:00입니다. 점심시간은 12:30~14:00이며 일요일과 공휴일은 휴진합니다."],
-  ["예약하고 가야 하나요?", "추나요법·체외충격파·고주파 치료는 예약제로 운영합니다. 그 외 진료는 예약 없이 내원하셔도 됩니다. 문의는 041-745-2141로 해 주세요."],
-  ["어떤 진료를 하나요?", "침·약침, 추나요법, 재활·운동치료, 교통사고 후유증, 한방 다이어트, 피부 관리(슈링크 리프팅·레이저 토닝·점 제거), 비염·감기·안면마비 같은 한방내과 진료를 합니다."],
-  ["교통사고 치료도 받을 수 있나요?", "네. 자동차보험 협약 의료기관이라 전 보험사 자동차보험이 적용되며, 본인부담금 없이 치료받을 수 있습니다. 과실 비율과 가입한 보험 조건에 따라 보험 처리 범위가 달라질 수 있어 내원 시 안내해 드립니다."],
+  ["논산 광명당한의원은 어디에 있나요?", "충남 논산시 강경읍 대흥로6번길 9(지번 강경읍 대흥리 32-120)에 있습니다. 네이버 지도에서 '광명당한의원'을 검색하면 길찾기를 할\u00A0수\u00A0있습니다."],
+  ["진료시간은 어떻게 되나요?", "평일(월~금) 08:30~20:00, 토요일 08:30~13:00입니다. 점심시간은 12:30~14:00이며, 접수마감은 평일 19:30, 토요일 12:30입니다. 일요일과 공휴일은 휴진합니다."],
+  ["예약하고 가야 하나요?", "추나요법, 체외충격파, 고주파 치료는 예약제로 운영합니다. 그 외 진료는 예약 없이 내원하셔도 됩니다. 문의는 041-745-2141로 해 주세요."],
+  ["어떤 진료를 하나요?", "침과 약침, 추나요법, 재활과 운동치료, 교통사고 후유증 치료를 합니다. 한방 다이어트, 피부 관리(슈링크 리프팅, 레이저 토닝, 점 제거)와 비염, 감기, 안면마비 같은 한방내과 진료도 합니다."],
+  ["교통사고 치료도 받을\u00A0수\u00A0있나요?", "네. 자동차보험 협약 의료기관이라 전 보험사 자동차보험이 적용되며, 본인부담금 없이 치료받을\u00A0수\u00A0있습니다. 과실 비율과 가입한 보험 조건에 따라 보험 처리 범위가 달라질\u00A0수\u00A0있어 내원 시 안내해 드립니다."],
 ];
 
 const still = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -148,7 +148,7 @@ function Price() {
 
   return (
     <section className="hs pr">
-      <Head title="Skin Price" sub="광명당 피부 클리닉 시술 가격을 확인해 보세요 (VAT 별도)" />
+      <Head title="피부 시술 가격" sub="광명당 피부 클리닉의 시술 가격입니다 (VAT 별도)" />
       <div className="pr-tabs" role="tablist">
         {CATEGORIES.map(([id, name], k) => (
           <button key={id} role="tab" aria-selected={k === tab} className={k === tab ? "on" : undefined} onClick={() => { setTab(k); setPage(0); }}>{name}</button>
@@ -156,7 +156,8 @@ function Price() {
       </div>
       <div className="pr-body" key={tab}>
         <a className="pr-main" href={`/program/${progs[0].slug}`}>
-          <img src={IMG + "skin/hero-model.jpg"} alt="" loading="lazy" />
+          {/* own 3:2 shot per category (model in the right 45%): desktop crops to the model, mobile shows the wide frame */}
+          <img src={`${IMG}skin/price-${CATEGORIES[tab][0]}.jpg`} alt="" loading="lazy" />
           <div className="pr-overlay">
             <strong>{CATEGORIES[tab][1]}</strong>
             <p>{progs[0].summary}</p>
@@ -205,7 +206,7 @@ function Story() {
 
   return (
     <section id="story" className="hs st">
-      <Head title="Clinic Story" sub="광명당한의원의 이야기를 만나보세요" />
+      <Head title="광명당 이야기" sub="1966년부터 이어 온 광명당한의원을 소개합니다" />
       <div className="st-tabs">
         {STORY.map(([name], k) => <button key={name} className={k === tab ? "on" : undefined} onClick={() => { setTab(k); setI(0); }}>{name}</button>)}
       </div>
@@ -239,14 +240,11 @@ function Treat() {
 
   return (
     <section id="pain" className="hs tr">
-      <Head title="Best Treatment" sub="광명당한의원이 집중하는 진료" />
+      <Head title="주요 진료" sub="광명당한의원이 집중하는 진료입니다" />
       <div className="tr-top">
         <div className="tr-tabs">
           {TREAT.map(([name], k) => <button key={name} className={k === tab ? "on" : undefined} onClick={() => pick(k)}>{name}</button>)}
         </div>
-        <select className="tr-select" value={tab} onChange={(e) => pick(+e.target.value)} aria-label="진료 분류">
-          {TREAT.map(([name], k) => <option key={name} value={k}>{name}</option>)}
-        </select>
       </div>
       <div className="tr-slider">
         <button className="tr-arrow prev" disabled={i === 0} onClick={() => setI(i - 1)} aria-label="이전">&lt;</button>
@@ -285,9 +283,9 @@ function Greeting() {
     <section className="bn">
       <div className="bn-inner">
         <div>
-          <h1 className="bn-title">1966년 강경 광명당한약방에서 시작해<br /><span>3대째</span> 지역의 건강을 살펴 온<br />논산 강경 한의원입니다.</h1>
+          <h1 className="bn-title">1966년 강경 광명당한약방에서 시작해<br /><span>3대째</span> 이웃의 건강을 살펴&nbsp;온<br />논산 강경 한의원입니다.</h1>
           <p className="bn-branch">광명당한의원</p>
-          <p className="bn-name">{DOCTORS.map(([, t, n]) => `${n} ${t}`).join(" · ")}</p>
+          <p className="bn-name">{DOCTORS.map(([, t, n]) => `${n} ${t}`).join(", ")}</p>
         </div>
         <div className="bn-imgs">
           {DOCTORS.map(([img, title, name]) => (
@@ -309,7 +307,7 @@ function Special() {
 
   return (
     <section className="hs sp">
-      <Head cls="blue" title="Gwangmyeongdang Special" sub={<>오래 믿고 찾을 수 있는 한의원을 위한 <b>광명당만의 특별함</b></>} />
+      <Head title="광명당만의 특별함" sub="처음 오시는 분께 먼저 알려 드리고 싶은 점입니다" />
       <div className="sp-slider">
         {SPECIAL.map(([img, title, text, more, href], k) => (
           <div key={title} className={"sp-slide" + (k === i ? " on" : "")} inert={k !== i}>
@@ -337,8 +335,8 @@ export default function Home() {
     <main className="home">
       <Hero />
       <Price />
-      <Story />
       <Treat />
+      <Story />
       <Greeting />
       <Special />
       <Faq items={FAQ} />

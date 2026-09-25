@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Script from "next/script";
 import "./chrome.css";
-import { IMG, BLOG, PLACE, KAKAO_PLACE, TEL, TEL_LINK, ADDRESS, KAKAO_JS_KEY } from "./site";
+import { IMG, BLOG, PLACE, KAKAO_CHANNEL, KAKAO_PLACE, TEL, TEL_LINK, ADDRESS, KAKAO_JS_KEY } from "./site";
 
 const EXT = { target: "_blank", rel: "noreferrer" };
 declare global {
@@ -14,14 +14,14 @@ declare global {
 const KAKAO_STATIC = "https://staticmap.kakao.com/map/mapservice?FORMAT=PNG&SCALE=2.5&MX=503530&MY=738217&S=0&IW=640&IH=480&LANG=0&COORDSTM=WCONGNAMUL&logo=kakao_logo";
 
 // menu bar = real pages only (no in-page section jumps)
-const NAV = [["교통사고", "/accident"], ["다이어트", "/diet"], ["피부 클리닉", "/skin"], ["시술메뉴", "/program"], ["블로그", BLOG]];
+const NAV = [["교통사고", "/accident"], ["다이어트", "/diet"], ["피부 클리닉", "/skin"], ["피부 시술", "/program"], ["한약과 치료", "/treatment"], ["블로그", BLOG]];
 const CONSULT = {
-  통증: ["목", "허리", "어깨", "무릎", "손목·발목", "기타"],
+  통증: ["목", "허리", "어깨", "무릎", "손목과 발목", "기타"],
   교통사고: ["교통사고 후유증"],
-  "추나·재활": ["추나요법", "재활·운동치료"],
-  피부: ["첫 방문 체험", "슈링크 리프팅", "레이저·듀얼·트리플 토닝", "프락셀·PN 스킨부스터", "점·잡티 제거"],
+  "추나와 재활": ["추나요법", "재활과 운동치료"],
+  피부: ["첫 방문 체험", "슈링크 리프팅", "레이저, 듀얼, 트리플 토닝", "프락셀, PN 스킨부스터", "점과 잡티 제거"],
   다이어트: ["한방 다이어트"],
-  기타: ["비염·감기", "안면마비", "기타"],
+  기타: ["비염과 감기", "안면마비", "기타"],
 };
 
 // tiny original inline line icons (stroke currentColor) -- no reference-site icons/logos reused
@@ -116,7 +116,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
       formRef.current?.close();
     } else {
       const err = await res?.json().then((d) => d.error as string, () => null);
-      alert(`${err ?? "접수하지 못했습니다."} 전화(${TEL})로도 문의하실 수 있습니다.`);
+      alert(`${err ?? "접수하지 못했습니다."} 전화(${TEL})로도 문의하실\u00A0수\u00A0있습니다.`);
     }
   };
 
@@ -128,11 +128,11 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {/* pill header: logo left, white rounded bar right (CTA · page links · burger); burger opens the full-screen menu */}
+      {/* pill header: logo left, white rounded bar right (CTA, page links, burger); burger opens the full-screen menu */}
       <header className={"hd" + (hidden && !menuOpen ? " is-hidden" : "") + (menuOpen ? " is-open" : "")}>
         <a className="hd-logo" href="/"><img src={IMG + "logo.png"} alt="광명당한의원" /></a>
         <nav className="hd-bar" inert={menuOpen}>
-          <button type="button" className="hd-cta" onClick={openForm}>상담 예약</button>
+          <a className="hd-cta" href={KAKAO_CHANNEL} {...EXT}>카카오톡 상담</a>
           <div className="hd-tools">
             <ul className="hd-links">
               {NAV.map(([n, h]) => (
@@ -168,6 +168,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
 
       {/* vertical icon strip (reference: right edge, vertically centered, 42px icons) */}
       <nav className="qk" aria-label="빠른 메뉴">
+        <a href={KAKAO_CHANNEL} {...EXT} aria-label="카카오톡 상담" title="카카오톡 상담"><IconChat /></a>
         <a href={TEL_LINK} aria-label={`전화 ${TEL}`} title="전화 상담"><IconPhone /></a>
         <a href={BLOG} {...EXT} aria-label="네이버 블로그" title="블로그"><IconEdit /></a>
         <a href={PLACE} {...EXT} aria-label="네이버 플레이스" title="네이버 플레이스"><IconPin /></a>
@@ -198,11 +199,10 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
               </div>
               <h3>진료시간</h3>
               <dl className="ft-time">
-                <dt>월·수·금</dt><dd>AM 08:30 - PM 08:00 <em>야간진료</em></dd>
-                <dt>화·목</dt><dd>AM 08:30 - PM 06:00</dd>
+                <dt>평일(월~금)</dt><dd>AM 08:30 - PM 08:00</dd>
                 <dt>토요일</dt><dd>AM 08:30 - PM 01:00</dd>
               </dl>
-              <p className="ft-note">※ 점심시간 PM 12:30 - PM 02:00 · 일요일·공휴일 휴진</p>
+              <p className="ft-note">※ 점심시간 PM&nbsp;12:30 - PM&nbsp;02:00, 접수마감 평일 PM&nbsp;07:30 / 토 PM&nbsp;12:30, 일요일과 공휴일 휴진</p>
               <h3>상담안내</h3>
               <a className="ft-phone" href={TEL_LINK}><span><IconPhone /></span>{TEL}</a>
             </div>
@@ -212,7 +212,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
           <div className="ft-row">
             <div>
               <p className="ft-name">광명당한의원 <span>대표 남인우</span></p>
-              <p className="ft-biz">{ADDRESS}<i>|</i>사업자등록번호 000-00-00000<i>|</i>전화 {TEL}</p>
+              <p className="ft-biz"><span>{ADDRESS}</span><span>사업자등록번호 000-00-00000</span><span>전화 {TEL}</span></p>
             </div>
             <button className="ft-prv" onClick={() => (document.getElementById("privacy") as HTMLDialogElement).showModal()}>개인정보처리방침</button>
           </div>
@@ -231,13 +231,13 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
       {/* desktop: tab rides up on a 105px strip of three actions (same interaction as the reference) */}
       <div className={"cs-wrap" + (consultOpen ? " open" : "")}>
         <button className="cs-tab" onClick={toggleConsult} aria-expanded={consultOpen} aria-controls="cs-options">
-          상담 / 예약하기
+          상담하기
           <span className="cs-tab-chevron"><IconChevron /></span>
         </button>
         <div id="cs-options" className="cs-options" inert={!consultOpen}>
           <div className="cs-actions">
+            <a className="cs-action" href={KAKAO_CHANNEL} {...EXT}><IconChat /><span>카카오톡 상담</span></a>
             <a className="cs-action" href={TEL_LINK}><IconPhone /><span>전화 상담</span></a>
-            <a className="cs-action" href={PLACE} {...EXT}><IconPin /><span>네이버 플레이스</span></a>
             <button type="button" className="cs-action" onClick={openForm}><IconEdit /><span>빠른 상담 신청</span></button>
           </div>
         </div>
@@ -249,7 +249,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
           <button type="button" className="cs-close" onClick={() => formRef.current?.close()} aria-label="닫기">×</button>
           <div className="cs-inputs">
             <input name="name" placeholder="이름" required maxLength={30} autoFocus />
-            <input name="tel" type="tel" placeholder="연락처" required maxLength={14} pattern="[0-9\-]{9,14}" title="숫자와 - 만 입력해 주세요" />
+            <input name="tel" type="tel" placeholder="연락처" required maxLength={14} pattern="[0-9\-]{9,14}" title="숫자와 하이픈(-)만 입력해 주세요" />
             <select name="item" required defaultValue="">
               <option value="" disabled hidden>상담항목</option>
               {Object.entries(CONSULT).map(([group, opts]) => (
@@ -260,9 +260,9 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
             </select>
           </div>
           {/* PIPA Art.15 notice: items, purpose, retention, right to refuse (retention period = owner decision) */}
-          <p className="cs-notice">수집 항목: 이름, 연락처, 상담 항목 · 이용 목적: 상담 및 예약 안내 · 보유 기간: 상담 완료 후 1년 · 동의를 거부할 수 있으며, 거부 시 온라인 상담 신청이 제한됩니다.</p>
+          <p className="cs-notice">수집 항목: 이름, 연락처, 상담 항목. 이용 목적: 상담 및 예약 안내. 보유 기간: 상담 완료 후 1년. 동의를 거부할&nbsp;수&nbsp;있으며, 거부 시 온라인 상담 신청이 제한됩니다.</p>
           <div className="cs-agree">
-            <label><input name="privacy" type="checkbox" required /> 개인정보 수집·이용 동의(필수)</label>
+            <label><input name="privacy" type="checkbox" required /> 개인정보 수집 및 이용 동의(필수)</label>
             <label><input name="sms" type="checkbox" /> SMS 수신 동의(선택)</label>
           </div>
           {/* honeypot: hidden from people, bots fill it and get silently dropped */}
@@ -273,10 +273,8 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
 
       <nav className="mb-tabbar">
         <a className="mb-tab" href={TEL_LINK}><IconPhone /><span>전화</span></a>
-        <a className="mb-tab" href={PLACE} {...EXT}><IconPin /><span>네이버 플레이스</span></a>
-        <button type="button" className="mb-tab" onClick={openForm}>
-          <IconChat /><span>상담·예약</span>
-        </button>
+        <a className="mb-tab" href={PLACE} {...EXT}><IconPin /><span>플레이스</span></a>
+        <a className="mb-tab" href={KAKAO_CHANNEL} {...EXT}><IconChat /><span>카카오톡 상담</span></a>
         <a className="mb-tab" href="#location"><IconMap /><span>오시는 길</span></a>
       </nav>
     </>

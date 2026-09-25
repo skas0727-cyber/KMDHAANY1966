@@ -49,7 +49,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
 
   return (
     <main className="ad-page">
-      {mode === "local" && <p className="ad-banner">로컬 저장소(개발용) — 배포 전 Supabase 연결 필요</p>}
+      {mode === "local" && <p className="ad-banner">로컬 저장소(개발용)입니다. 배포 전에 Supabase를 연결해 주세요.</p>}
       <TopBar />
 
       <div className="ad-toolbar">
@@ -82,7 +82,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
               <th>연락처</th>
               <th>상담 항목</th>
               <th>SMS 동의</th>
-              <th>상태 · 메모</th>
+              <th>상태와 메모</th>
               <th></th>
             </tr>
           </thead>
@@ -97,7 +97,7 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                   <td data-label="연락처"><a href={`tel:${item.phone}`}>{item.phone}</a></td>
                   <td data-label="상담 항목">{item.item}</td>
                   <td data-label="SMS 동의">{item.sms_consent ? "예" : "아니오"}</td>
-                  <td data-label="상태 · 메모">
+                  <td data-label="상태와 메모">
                     <form action={update} className="ad-row-form">
                       <select name="status" defaultValue={item.status} aria-label={`${item.name} 상태`} className={`ad-chip ad-chip-${item.status}`}>
                         {STATUSES.map((s) => (

@@ -1,9 +1,11 @@
 "use client";
 import { useState } from "react";
 import { CATEGORIES, CONCERNS, PROGRAMS } from "../programs";
+import HeroTabs from "../hero-tabs";
 
 const CAT = Object.fromEntries(CATEGORIES);
-const TABS = [["all", "전체"], ...CATEGORIES];
+// hero tabs: each category swaps in its own model shot (/img/program-<cat>[-wide].jpg)
+const TABS = [{ id: "all", label: "전체", bg: "program" }, ...CATEGORIES.map(([id, label]) => ({ id, label, bg: "program-" + id }))];
 
 // no data-aos on cards: the reveal observer only runs once per route, so cards re-mounted by filtering would stay hidden
 export default function ProgramList() {
@@ -13,18 +15,15 @@ export default function ProgramList() {
   const list = PROGRAMS.filter((p) => (cat === "all" || p.cat === cat) && (!picked.length || p.concerns.some((c) => picked.includes(c))));
 
   return (
+    <>
+    <HeroTabs tabs={TABS} base="program" selected={cat} onSelect={setCat}>
+      <h1><span className="sub-label gm">논산 피부 한의원</span> 피부 프로그램</h1>
+      <p>피부 고민을 고르면 맞는 프로그램과 가격을 한눈에 확인할&nbsp;수&nbsp;있습니다.</p>
+    </HeroTabs>
     <section className="pl" data-aos>
-      <ul className="pl-cats">
-        {TABS.map(([id, t]) => (
-          <li key={id}>
-            <button type="button" className={cat === id ? "pl-on" : ""} aria-pressed={cat === id} onClick={() => setCat(id)}>{t}</button>
-          </li>
-        ))}
-      </ul>
-
       <div className="pl-concern">
         <div className="pl-q">
-          <p id="pl-q">어떤 변화가 필요하신가요? <span>(중복 선택 가능)</span></p>
+          <p id="pl-q">어떤 피부 고민이 있으신가요? <span>(중복 선택 가능)</span></p>
           {picked.length > 0 && <button type="button" className="pl-reset" onClick={() => setPicked([])}>초기화</button>}
         </div>
         <div className="pl-chips" role="group" aria-labelledby="pl-q">
@@ -45,7 +44,6 @@ export default function ProgramList() {
                 <a href={"/program/" + p.slug} className="pl-card">
                   <div className="pl-top">
                     <span className="pl-cat">{CAT[p.cat]}</span>
-                    <b className="gm">{p.en}</b>
                   </div>
                   <div className="pl-body">
                     <h2>{p.name}</h2>
@@ -68,5 +66,6 @@ export default function ProgramList() {
         <p className="pl-empty">선택하신 조건에 맞는 프로그램이 없습니다.<br />다른 고민을 선택하거나 초기화해 주세요.</p>
       )}
     </section>
+    </>
   );
 }

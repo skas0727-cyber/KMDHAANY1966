@@ -6,10 +6,9 @@ export default function Faq({ items }: { items: string[][] }) {
     mainEntity: items.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })),
   };
   return (
-    <section className="sub-cat faq">
+    <section id="faq" className="sub-cat faq">
       <div className="sub-cat-head" data-aos>
         <div>
-          <p className="en gm">FAQ</p>
           <h2>자주 묻는 질문</h2>
         </div>
       </div>

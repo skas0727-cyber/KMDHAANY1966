@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props) {
   const p = getProgram(slug);
   if (!p) return {};
   const first = p.intro.split(". ")[0].replace(/\.$/, "") + ".";
-  return pageMeta(`/program/${p.slug}`, `논산 ${p.name} · 가격`, `${p.summary}. ${first} 광명당한의원 가격 안내(VAT 별도).`);
+  return pageMeta(`/program/${p.slug}`, `논산 ${p.name} 가격`, `${p.summary}. ${first} 광명당한의원 가격 안내(VAT 별도).`);
 }
 
 const CAT = Object.fromEntries(CATEGORIES);
@@ -46,7 +46,6 @@ export default async function Page({ params }: Props) {
             <a href="/program">피부 프로그램</a>
             <span>{CAT[p.cat]}</span>
           </nav>
-          <p className="pv-en gm">{p.en}</p>
           <h1><span className="sub-label gm">논산 피부 한의원</span> {p.name}</h1>
           <p className="pv-summary">{p.summary}</p>
           <ul className="sub-tags">{p.concerns.map((c) => <li key={c}>#{c}</li>)}</ul>
@@ -54,7 +53,6 @@ export default async function Page({ params }: Props) {
         </div>
 
         <aside className="pv-price" aria-label={`${p.name} 가격`}>
-          <p className="en gm">PRICE</p>
           <h2>{p.name} 가격</h2>
           <ul className="pv-opts">
             {p.options.map((o) => (
@@ -79,7 +77,6 @@ export default async function Page({ params }: Props) {
           <section className="sub-cat">
             <div className="sub-cat-head" data-aos>
               <div>
-                <p className="en gm">RECOMMEND</p>
                 <h2>이런 분들께 추천드립니다</h2>
               </div>
             </div>
@@ -89,8 +86,7 @@ export default async function Page({ params }: Props) {
           <section className="sub-cat">
             <div className="sub-cat-head" data-aos>
               <div>
-                <p className="en gm">EFFECT</p>
-                <h2>이런 효과를 기대할 수 있습니다</h2>
+                <h2>이런 효과를 기대할&nbsp;수&nbsp;있습니다</h2>
               </div>
             </div>
             <ul className="sub-cards pv-fx" data-aos>
@@ -101,7 +97,6 @@ export default async function Page({ params }: Props) {
           <section className="sub-cat">
             <div className="sub-cat-head" data-aos>
               <div>
-                <p className="en gm">PROCESS</p>
                 <h2>시술 과정</h2>
               </div>
             </div>
@@ -122,7 +117,6 @@ export default async function Page({ params }: Props) {
       <section className="sub-cat pv-others">
         <div className="sub-cat-head" data-aos>
           <div>
-            <p className="en gm">OTHER PROGRAMS</p>
             <h2>다른 프로그램</h2>
           </div>
           <a className="pv-all" href="/program">전체 프로그램 보기</a>
@@ -131,7 +125,6 @@ export default async function Page({ params }: Props) {
           {PROGRAMS.filter((o) => o.slug !== p.slug).map((o) => (
             <li key={o.slug}>
               <a className="pv-card" href={`/program/${o.slug}`}>
-                <p className="en gm">{o.en}</p>
                 <h3>{o.name}</h3>
                 <p>{o.summary}</p>
                 <span className="pv-more">자세히 보기 →</span>
