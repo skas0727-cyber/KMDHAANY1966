@@ -196,10 +196,11 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
               </div>
               <h3>진료시간</h3>
               <dl className="ft-time">
-                <dt>평일(월~금)</dt><dd>08:30~20:00</dd>
+                <dt>월, 수, 금</dt><dd>08:30~20:00</dd>
+                <dt>화, 목</dt><dd>08:30~18:00</dd>
                 <dt>토요일</dt><dd>08:30~13:00</dd>
               </dl>
-              <p className="ft-note">※ 점심시간 12:30 - 14:00, 접수마감 평일 19:30 / 토 12:30, 일요일과 공휴일 휴진</p>
+              <p className="ft-note">※ 점심시간 12:30 - 14:00, 접수마감 월수금 19:30, 화목 17:30, 토 12:30, 일요일과 공휴일 휴진</p>
               <h3>상담안내</h3>
               <a className="ft-phone" href={TEL_LINK}><span><IconPhone /></span>{TEL}</a>
             </div>
