@@ -8,8 +8,8 @@ const TABS = [["all", "전체"], ...CATEGORIES];
 // no data-aos on cards: the reveal observer only runs once per route, so cards re-mounted by filtering would stay hidden
 export default function ProgramList() {
   const [cat, setCat] = useState("all");
-  const [picked, setPicked] = useState([]);
-  const toggle = (c) => setPicked((s) => (s.includes(c) ? s.filter((x) => x !== c) : [...s, c]));
+  const [picked, setPicked] = useState<string[]>([]);
+  const toggle = (c: string) => setPicked((s) => (s.includes(c) ? s.filter((x) => x !== c) : [...s, c]));
   const list = PROGRAMS.filter((p) => (cat === "all" || p.cat === cat) && (!picked.length || p.concerns.some((c) => picked.includes(c))));
 
   return (
@@ -42,7 +42,7 @@ export default function ProgramList() {
             const o = p.options[0];
             return (
               <li key={p.slug}>
-                <a href={"/program/" + p.slug} className={"pl-card" + (PROGRAMS.indexOf(p) % 2 ? " pl-dark" : "")}>
+                <a href={"/program/" + p.slug} className="pl-card">
                   <div className="pl-top">
                     <span className="pl-cat">{CAT[p.cat]}</span>
                     <b className="gm">{p.en}</b>
@@ -54,7 +54,7 @@ export default function ProgramList() {
                     <div className="pl-bottom">
                       <div className="pl-price">
                         {o.first && <span className="pl-badge">첫 방문</span>}
-                        <b className="gm">{o.price}{!o.first && "~"}</b>
+                        <b className="gm">{o.price}{!o.first && p.options.length > 1 && "~"}</b>
                       </div>
                       <span className="pl-more">자세히 보기 →</span>
                     </div>

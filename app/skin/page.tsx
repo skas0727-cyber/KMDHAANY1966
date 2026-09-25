@@ -1,5 +1,5 @@
 import Faq from "../faq";
-import { CATEGORIES, PROGRAMS } from "../programs";
+import { CATEGORIES, PROGRAMS, type Program } from "../programs";
 import { pageMeta, TEL, TEL_LINK } from "../site";
 
 // "피부과" is a medical-specialty name a 한의원 must not use; target "피부 한의원" instead
@@ -10,7 +10,7 @@ export const metadata = pageMeta(
 );
 
 const VALUES = [["무리하지 않는 시술", "자연스럽게"], ["피부 본연의 힘을", "건강하게"], ["오늘, 더 좋은 나", "아름답게"]];
-const TABS = [["concern", "색소 질환"], ["diagnosis", "검사·치료"], ["first", "첫 방문 체험가"], ["lifting", "리프팅"], ["booster", "스킨부스터"], ["price", "가격표"]];
+const TABS = [["first", "첫 방문 체험가"], ["concern", "색소 질환"], ["diagnosis", "검사·치료"], ["lifting", "리프팅"], ["booster", "스킨부스터"], ["price", "가격표"]];
 // [illustration file in /img/skin, name, description]
 const CONDITIONS = [
   ["geomburseot", "검버섯", "나이가 들수록 늘어나는 흔한 병변으로, 피부 표면의 각질이 두껍게 쌓이며 갈색에서 흑갈색으로 도드라집니다. 만졌을 때 표면이 거칠게 느껴지는 경우가 많습니다."],
@@ -27,9 +27,9 @@ const POINTS = [
 ];
 // first-visit prices from the clinic's price sheet (VAT 별도); the full price list comes from ../programs
 const FIRST = [
-  ["LIFTING CARE", "슈링크 100샷", "첫 방문 피부진단 + 100샷 체험", "15,000원"],
-  ["TONING CARE", "듀얼토닝 1,500샷", "첫 방문 피부진단 + 1,500샷 체험", "25,000원"],
-  ["SKIN CARE", "점·검버섯·쥐젖 등", "신경 쓰이는 피부 고민, 개당", "5,000원~"],
+  ["LIFTING CARE", "슈링크 100샷", "첫 방문 피부진단 + 100샷 체험", "15,000원", "shurink"],
+  ["TONING CARE", "듀얼토닝 1,500샷", "첫 방문 피부진단 + 1,500샷 체험", "25,000원", "toning"],
+  ["SKIN CARE", "점·검버섯·쥐젖 등", "신경 쓰이는 피부 고민, 개당", "5,000원~", "removal"],
 ];
 // [tag, name, description, detail link (none = price given after consultation)]
 const BOOSTERS = [
@@ -46,7 +46,7 @@ const FAQ = [
   ["시술 후 바로 일상생활이 가능한가요?", "대부분 바로 일상생활이 가능합니다. 다만 시술에 따라 붉어짐이나 딱지가 며칠 생길 수 있어 시술 전에 안내해 드립니다."],
 ];
 
-function Head({ en, title, lead }) {
+function Head({ en, title, lead }: { en: string; title: string; lead?: string }) {
   return (
     <div className="sub-cat-head" data-aos>
       <div>
@@ -58,7 +58,7 @@ function Head({ en, title, lead }) {
   );
 }
 
-function PriceItem({ p }) {
+function PriceItem({ p }: { p: Program }) {
   return (
     <div className="sub-item" data-aos>
       <div>
@@ -70,7 +70,7 @@ function PriceItem({ p }) {
       <dl className="sub-price">
         {p.options.map((o) => (
           <div key={o.name}>
-            <dt>{o.name}{o.first && <em className="sc-first">첫 방문</em>}</dt>
+            <dt>{o.name}{o.first && <em className="sc-first">첫 방문</em>}<small className="sc-price-spec">{o.spec}</small></dt>
             <dd className="gm">{o.orig && <del>{o.orig}</del>}{o.price}</dd>
           </div>
         ))}
@@ -81,14 +81,16 @@ function PriceItem({ p }) {
 
 export default function Skin() {
   return (
-    <main>
-      <section className="sub-hero">
+    <main className="skin-clinic">
+      <section className="sub-hero photo sc-hero">
+        <img className="sub-hero-img" src="/img/skin/hero-model.jpg" alt="" />
         <div className="sub-hero-inner">
           <div data-aos>
+            <p className="sc-hero-en gm">GWANGMYEONGDANG<br />KOREAN MEDICINE CLINIC</p>
             <h1><span className="sub-label gm">논산 피부 한의원</span> 건강한 피부,<br /> <b>좋은 하루를 만듭니다</b></h1>
             <p>기미·검버섯 같은 색소 고민부터 리프팅, 스킨부스터까지.<br className="pc" /> 피부 분석 결과에 맞춰 차근차근 관리해 드립니다.</p>
+            <div className="sc-hero-links"><a href="#first">첫 방문 체험가 보기 ↗</a><a href="#price">전체 가격 안내 →</a></div>
           </div>
-          <img src="/img/herbs.jpg" alt="광명당한의원 피부 클리닉" />
         </div>
       </section>
 
@@ -102,12 +104,27 @@ export default function Skin() {
         </ul>
       </nav>
 
+      <section id="first" className="sub-cat sc-first-visit">
+        <Head en="FIRST VISIT" title="처음이라면, 부담 없이 피부관리" lead="첫 방문 1회 체험가 · 모든 시술 VAT 별도" />
+        <ul className="sub-cards" data-aos>
+          {FIRST.map(([en, t, d, price, slug]) => (
+            <li key={t}>
+              <p className="en gm">{en}</p>
+              <h3>{t}</h3>
+              <p>{d}</p>
+              <b className="price gm">{price}</b>
+              <a className="sc-more" href={`/program/${slug}`}>시술 자세히 보기 →</a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section id="concern" className="sub-cat">
         <Head en="PIGMENT & LESION" title="되풀이되는 색소·잡티, 원인부터 봅니다" lead="겉으로는 비슷해 보여도 생기는 깊이와 원인이 저마다 다릅니다. 대표적인 여섯 가지를 먼저 알아 두세요." />
         <ul className="sub-cards sc-ill" data-aos>
           {CONDITIONS.map(([file, name, desc]) => (
             <li key={file}>
-              <img src={`/img/skin/${file}.svg`} alt={`${name} 예시 그림`} />
+              <img src={`/img/skin/${file}.svg`} alt={`${name} 예시 그림`} loading="lazy" />
               <h3>{name}</h3>
               <p>{desc}</p>
             </li>
@@ -136,20 +153,6 @@ export default function Skin() {
         </ul>
       </section>
 
-      <section id="first" className="sub-cat">
-        <Head en="FIRST VISIT" title="첫 방문 1회 체험가" lead="처음이라면 부담 없이 시작해 보세요. 첫 방문 피부진단이 함께 진행됩니다." />
-        <ul className="sub-cards" data-aos>
-          {FIRST.map(([en, t, d, price]) => (
-            <li key={t}>
-              <p className="en gm">{en}</p>
-              <h3>{t}</h3>
-              <p>{d}</p>
-              <b className="price gm">{price}</b>
-            </li>
-          ))}
-        </ul>
-      </section>
-
       <section id="lifting" className="sub-cat">
         <Head en="LIFTING CARE" title="흐려진 얼굴선에 다시 탄력을" />
         <div className="sc-intro" data-aos>
@@ -166,7 +169,7 @@ export default function Skin() {
 
       <section id="booster" className="sub-cat">
         <Head en="SKIN BOOSTER" title="얇아지고 건조해진 피부, 재생 관리로 가꿉니다" lead="피부가 스스로 회복하는 힘을 돕는 성분을 진피층에 직접 전달하는 주사 관리입니다." />
-        <ul className="sub-cards sc-boost" style={{ "--cols": 2 }} data-aos>
+        <ul className="sub-cards sc-boost" style={{ "--cols": 2 } as React.CSSProperties} data-aos>
           {BOOSTERS.map(([tag, name, desc, href]) => (
             <li key={tag}>
               <p className="en gm">{tag}</p>

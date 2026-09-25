@@ -1,5 +1,5 @@
 // visible Q&A (native <details>) + FAQPage structured data, so search/answer engines can quote it
-export default function Faq({ items }) {
+export default function Faq({ items }: { items: string[][] }) {
   const ld = {
     "@context": "https://schema.org",
     "@type": "FAQPage",

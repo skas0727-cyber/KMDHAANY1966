@@ -10,7 +10,7 @@ export const metadata = pageMeta(
 
 export default function Program() {
   return (
-    <main>
+    <main className="skin-clinic">
       <section className="sub-hero pl-hero">
         <div className="sub-hero-inner">
           <div data-aos>

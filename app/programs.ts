@@ -1,12 +1,19 @@
 // single source for skin programs, shared by /skin (overview), /program (list) and /program/[slug] (detail)
 // prices come from the clinic's own price sheets and are VAT 별도
-export const CATEGORIES = [["lifting", "리프팅·탄력"], ["texture", "피부결·재생"], ["toning", "색소·피부톤"], ["removal", "점·잡티 제거"]];
+export type ProgramOption = { name: string; spec: string; price: string; orig?: string; first?: boolean };
+export type Program = {
+  slug: string; cat: string; name: string; en: string; summary: string; intro: string;
+  concerns: string[]; options: ProgramOption[]; recommend: string[];
+  effects: [string, string][]; steps: [string, string][]; cautions: string[]; faq: [string, string][];
+};
+
+export const CATEGORIES: [string, string][] = [["lifting", "리프팅·탄력"], ["texture", "피부결·재생"], ["toning", "색소·피부톤"], ["removal", "점·잡티 제거"]];
 export const CONCERNS = ["피부톤", "잡티", "피부결", "모공", "흉터·흔적", "탄력", "윤곽정리", "수분감", "점·쥐젖"];
 
-export const PROGRAMS = [
+export const PROGRAMS: Program[] = [
   {
     slug: "shurink", cat: "lifting", name: "슈링크 리프팅", en: "SHURINK LIFTING",
-    summary: "턱선·하관·얼굴라인을 끌어올리는 초음파 리프팅",
+    summary: "턱선·하관·얼굴라인의 탄력을 관리하는 초음파 리프팅",
     intro: "슈링크는 초음파(HIFU)를 피부 속 근막(SMAS)층 가까이에 모아 전달하는 리프팅 장비입니다. 겉 피부는 그대로 두고 깊은 층부터 당겨 주어, 처진 라인과 탄력·잔주름 관리에 쓰입니다. 처음이라면 첫 방문 피부진단과 함께 100샷을 가볍게 체험해 보세요.",
     concerns: ["탄력", "윤곽정리"],
     options: [
@@ -110,4 +117,4 @@ export const PROGRAMS = [
   },
 ];
 
-export const getProgram = (slug) => PROGRAMS.find((p) => p.slug === slug);
+export const getProgram = (slug: string) => PROGRAMS.find((p) => p.slug === slug);

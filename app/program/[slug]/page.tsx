@@ -4,13 +4,15 @@ import { CATEGORIES, PROGRAMS, getProgram } from "../../programs";
 import { pageMeta, SITE_URL, NAME, TEL, TEL_LINK } from "../../site";
 import "./view.css";
 
+type Props = { params: Promise<{ slug: string }> };
+
 export const dynamicParams = false;
 
 export function generateStaticParams() {
   return PROGRAMS.map((p) => ({ slug: p.slug }));
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
   const p = getProgram(slug);
   if (!p) return {};
@@ -20,7 +22,7 @@ export async function generateMetadata({ params }) {
 
 const CAT = Object.fromEntries(CATEGORIES);
 
-export default async function Page({ params }) {
+export default async function Page({ params }: Props) {
   const { slug } = await params;
   const p = getProgram(slug);
   if (!p) notFound();
@@ -31,13 +33,13 @@ export default async function Page({ params }) {
     name: p.name,
     description: p.summary,
     url: `${SITE_URL}/program/${p.slug}`,
-    provider: { "@type": "MedicalClinic", name: NAME, url: SITE_URL },
+    provider: { "@id": `${SITE_URL}/#clinic`, "@type": "MedicalClinic", name: NAME, url: SITE_URL },
     areaServed: "논산시",
-    offers: p.options.map((o) => ({ "@type": "Offer", name: o.name, price: Number(o.price.replace(/[^0-9]/g, "")), priceCurrency: "KRW" })),
+    offers: p.options.map((o) => ({ "@type": "Offer", name: o.name, price: Number(o.price.replace(/[^0-9]/g, "")), priceCurrency: "KRW", description: (o.first ? "첫 방문 1회, " : "") + "VAT 별도" })),
   };
 
   return (
-    <main>
+    <main className="skin-clinic">
       <div className="pv-wrap">
         <div className="pv-head">
           <nav className="pv-crumb" aria-label="현재 위치">

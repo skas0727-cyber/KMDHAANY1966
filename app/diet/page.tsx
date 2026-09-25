@@ -36,13 +36,13 @@ const FAQ = [
 export default function Diet() {
   return (
     <main>
-      <section className="sub-hero">
+      <section className="sub-hero photo">
+        <img className="sub-hero-img" src="/img/herbs.jpg" alt="" style={{ objectPosition: "50% 30%" }} />
         <div className="sub-hero-inner">
           <div data-aos>
-            <h1><span className="sub-label gm">논산 다이어트 한의원</span> 굶지 않고,<br /> <b>체질에 맞게 뺍니다</b></h1>
+            <h1><span className="sub-label gm">논산 다이어트 한의원</span> 굶지 않고,<br /> <b>체질에 맞게 관리합니다</b></h1>
             <p>살이 찌는 이유는 사람마다 다릅니다.<br className="pc" /> 광명당한의원은 비만 유형과 체질을 먼저 진단하고, 맞춤 한약으로 식욕과 대사를 함께 관리합니다.</p>
           </div>
-          <img src="/img/herbs.jpg" alt="체질 맞춤 다이어트 한약" />
         </div>
       </section>
 

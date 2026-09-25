@@ -1,0 +1,78 @@
+/* /admin: internal tool, not the public site — reuses root color vars (black/white/blue/neutrals) from globals.css */
+
+.ad-root { min-height: 100vh; background: var(--white); font-size: 15px; line-height: 1.6; }
+
+/* ---- login ---- */
+.ad-login { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+.ad-login-card { width: 100%; max-width: 360px; padding: 40px 32px; border: 1px solid var(--border); border-radius: 16px; }
+.ad-login-card h1 { font-size: 20px; font-weight: 700; margin-bottom: 24px; text-align: center; }
+.ad-login-form { display: flex; flex-direction: column; gap: 10px; }
+.ad-login-form label { font-size: 13px; color: var(--gray); }
+.ad-login-form input { padding: 12px 14px; border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 16px; }
+.ad-login-form input:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; border-color: var(--blue); }
+.ad-login-form button { margin-top: 6px; padding: 12px; border-radius: 8px; background: var(--blue); color: var(--white); font-weight: 700; transition: background .2s; }
+.ad-login-form button:hover { background: var(--blue-hover); }
+.ad-login-form button:disabled { background: var(--gray-light); cursor: default; }
+.ad-error { padding: 10px 14px; border: 1px solid var(--border); border-radius: 8px; background: rgba(17, 17, 17, .03); color: var(--black); font-size: 13px; font-weight: 600; }
+
+/* ---- page shell ---- */
+.ad-page { max-width: 1280px; margin: 0 auto; padding: 32px 24px 80px; }
+.ad-banner { margin-bottom: 20px; padding: 10px 16px; border: 1px solid var(--border); border-radius: 8px; background: rgba(17, 17, 17, .04); color: var(--gray); font-size: 13px; }
+.ad-setup { margin-top: 24px; padding: 20px; border: 1px solid var(--border); border-radius: 12px; color: var(--gray); line-height: 1.8; }
+.ad-setup code { padding: 2px 6px; border-radius: 4px; background: var(--white); border: 1px solid var(--border); font-size: .9em; }
+
+.ad-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 20px; border-bottom: 1px solid var(--black); }
+.ad-top h1 { font-size: 22px; font-weight: 700; letter-spacing: -.3px; }
+.ad-logout { padding: 8px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; color: var(--gray); transition: .2s; }
+.ad-logout:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ---- tabs + search ---- */
+.ad-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin: 24px 0; }
+.ad-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.ad-tabs a { display: flex; align-items: center; gap: 6px; padding: 8px 16px; border: 1px solid var(--border); border-radius: 999px; font-size: 14px; color: var(--gray); transition: .2s; }
+.ad-tabs a span { font-size: 12px; color: var(--gray-light); }
+.ad-tabs a:hover { border-color: var(--blue); color: var(--blue); }
+.ad-tabs a.ad-on { background: var(--blue); border-color: var(--blue); color: var(--white); }
+.ad-tabs a.ad-on span { color: var(--white); opacity: .8; }
+.ad-search { display: flex; gap: 8px; }
+.ad-search input { padding: 9px 14px; border: 1px solid var(--border); border-radius: 999px; font: inherit; font-size: 14px; width: 220px; }
+.ad-search input:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; border-color: var(--blue); }
+.ad-search button { padding: 9px 18px; border: 1px solid var(--black); border-radius: 999px; font-size: 14px; transition: .2s; }
+.ad-search button:hover { background: var(--black); color: var(--white); }
+
+.ad-empty { padding: 80px 20px; text-align: center; color: var(--gray-light); }
+
+/* ---- table (stacks into cards ≤767px) ---- */
+.ad-table { width: 100%; border-collapse: collapse; }
+.ad-table th { padding: 12px 14px; border-bottom: 1px solid var(--black); text-align: left; font-size: 13px; font-weight: 600; color: var(--gray); white-space: nowrap; }
+.ad-table td { padding: 16px 14px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 14px; }
+.ad-table tbody tr:hover { background: rgba(17, 17, 17, .02); }
+.ad-table a[href^="tel:"] { color: var(--blue); }
+
+.ad-row-form { display: flex; flex-direction: column; gap: 8px; min-width: 220px; }
+.ad-row-form textarea { padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 13px; resize: vertical; }
+.ad-row-form textarea:focus-visible, .ad-chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
+.ad-save { align-self: flex-start; padding: 6px 16px; border-radius: 999px; background: var(--black); color: var(--white); font-size: 13px; transition: .2s; }
+.ad-save:hover { background: var(--blue); }
+.ad-delete { padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; color: var(--gray); transition: .2s; }
+.ad-delete:hover { border-color: var(--black); color: var(--black); }
+
+/* status chip (also the editable select) */
+.ad-chip { padding: 5px 12px; border-radius: 999px; font-size: 13px; font-weight: 600; font: inherit; }
+.ad-chip-new { background: var(--blue); border: 1px solid var(--blue); color: var(--white); }
+.ad-chip-in_progress { background: var(--white); border: 1px solid var(--blue); color: var(--blue); }
+.ad-chip-done { background: var(--border); border: 1px solid var(--border); color: var(--gray); }
+
+@media (max-width: 767px) {
+  .ad-page { padding: 20px 16px 60px; }
+  .ad-toolbar { flex-direction: column; align-items: stretch; }
+  .ad-search input, .ad-row-form textarea { font-size: 16px; } /* no iOS zoom on focus */
+  .ad-search input { width: auto; flex: 1; }
+
+  .ad-table thead { display: none; }
+  .ad-table, .ad-table tbody, .ad-table tr, .ad-table td { display: block; width: 100%; }
+  .ad-table tr { margin-bottom: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; }
+  .ad-table td { padding: 6px 0; border: 0; }
+  .ad-table td::before { content: attr(data-label); display: block; margin-bottom: 4px; font-size: 12px; color: var(--gray-light); }
+  .ad-row-form { min-width: 0; }
+}
