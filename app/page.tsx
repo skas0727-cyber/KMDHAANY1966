@@ -276,7 +276,7 @@ function Treat() {
 // [photo file (empty = placeholder until the photo arrives), title, name]
 const DOCTORS: [string, string, string][] = [
   ["ultrasound1.jpg", "대표원장", "남인우"],
-  ["", "원장", "김준형"], // TODO: photo
+  ["director2.jpg", "원장", "김준형"], // TODO: photo
 ];
 function Greeting() {
   return (
