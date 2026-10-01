@@ -67,16 +67,37 @@
 
 .ad-empty { padding: 80px 20px; text-align: center; color: var(--gray-light); }
 
-/* ---- table (stacks into cards ≤767px) ---- */
+/* ---- table: grouped by day, compact rows (stacks into cards ≤767px) ---- */
+.ad-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .ad-table { width: 100%; border-collapse: collapse; }
-.ad-table th { padding: 12px 14px; border-bottom: 1px solid var(--black); text-align: left; font-size: 13px; font-weight: 600; color: var(--gray); white-space: nowrap; }
-.ad-table td { padding: 16px 14px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 14px; }
-.ad-table tbody tr:hover { background: rgba(17, 17, 17, .02); }
-.ad-table a[href^="tel:"] { color: var(--blue); }
+.ad-table thead th { padding: 10px 12px; border-bottom: 1px solid var(--black); text-align: left; font-size: 13px; font-weight: 600; color: var(--gray); white-space: nowrap; }
+.ad-table td { padding: 12px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 14px; }
+.ad-row:hover { background: rgba(17, 17, 17, .02); }
+.ad-group th { padding: 22px 12px 8px; border-bottom: 1px solid var(--border); text-align: left; font-size: 14px; font-weight: 700; }
+.ad-group th span { margin-left: 6px; font-weight: 400; color: var(--gray-light); }
 
-.ad-memo { display: block; width: 100%; min-width: 240px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 13px; resize: vertical; }
+.ad-c-time { width: 84px; color: var(--gray); white-space: nowrap; }
+.ad-c-who { width: 180px; }
+.ad-c-who strong { font-weight: 700; }
+.ad-c-who a { display: block; color: var(--blue); }
+.ad-tag { display: inline-block; margin-left: 6px; padding: 0 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; line-height: 18px; color: var(--gray); vertical-align: 1px; }
+.ad-c-status { width: 110px; }
+.ad-c-memo { width: 40%; }
+.ad-c-del { width: 72px; text-align: right; }
+/* unhandled = blue edge, finished = muted, so a long list reads at a glance */
+.ad-row-new .ad-c-time { box-shadow: inset 3px 0 var(--blue); }
+.ad-row-done .ad-c-time, .ad-row-done .ad-c-who, .ad-row-done .ad-c-who a, .ad-row-done .ad-c-item { color: var(--gray-light); }
+
+.ad-pager { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 28px; font-size: 14px; }
+.ad-pager a, .ad-pager > span { padding: 8px 18px; border: 1px solid var(--border); border-radius: 999px; }
+.ad-pager a:hover { border-color: var(--blue); color: var(--blue); }
+.ad-pager > span { color: var(--gray-light); }
+.ad-pager p span { color: var(--gray-light); }
+
+.ad-memo { display: block; width: 100%; min-width: 240px; min-height: 40px; max-height: 240px; field-sizing: content; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font: inherit; font-size: 13px; resize: vertical; }
 .ad-memo:focus-visible, .ad-chip:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
-.ad-save-state { min-height: 18px; margin-top: 4px; font-size: 12px; color: var(--gray-light); }
+.ad-save-state { margin-top: 4px; font-size: 12px; color: var(--gray-light); }
+.ad-save-state:empty { margin: 0; } /* stays in the DOM for aria-live, takes no room until it has text */
 .ad-save-error { color: var(--black); font-weight: 600; }
 .ad-delete { padding: 6px 14px; border: 1px solid var(--border); border-radius: 999px; font-size: 13px; color: var(--gray); transition: .2s; }
 .ad-delete:hover { border-color: var(--black); color: var(--black); }
@@ -96,10 +117,15 @@
   .ad-search input[type="date"] { flex-basis: 100%; }
   .ad-chart { padding: 16px 16px 32px; }
 
+  /* card per inquiry: name + status on top, item, memo, then time + delete */
   .ad-table thead { display: none; }
-  .ad-table, .ad-table tbody, .ad-table tr, .ad-table td { display: block; width: 100%; }
-  .ad-table tr { margin-bottom: 14px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; }
-  .ad-table td { padding: 6px 0; border: 0; }
-  .ad-table td::before { content: attr(data-label); display: block; margin-bottom: 4px; font-size: 12px; color: var(--gray-light); }
+  .ad-table, .ad-table tbody, .ad-group, .ad-group th { display: block; }
+  .ad-group th { padding: 18px 2px 8px; border: 0; }
+  .ad-row { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "who status" "item item" "memo memo" "time del"; gap: 8px 12px; margin-bottom: 10px; padding: 14px; border: 1px solid var(--border); border-radius: 12px; }
+  .ad-table td { width: auto; padding: 0; border: 0; }
+  .ad-c-who { grid-area: who; } .ad-c-status { grid-area: status; } .ad-c-item { grid-area: item; color: var(--gray); }
+  .ad-c-memo { grid-area: memo; } .ad-c-time { grid-area: time; align-self: center; font-size: 13px; } .ad-c-del { grid-area: del; }
+  .ad-row-new { border-left: 3px solid var(--blue); }
+  .ad-row-new .ad-c-time { box-shadow: none; }
   .ad-memo { min-width: 0; }
 }

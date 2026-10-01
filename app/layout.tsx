@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     "충남 논산시 강경읍 광명당한의원. 1966년 광명당한약방에서 시작해 3대째 이어온 한의원입니다. 침과 약침, 추나요법, 교통사고 후유증 치료(자동차보험 본인부담금 0원), 한방 다이어트, 피부 관리(슈링크, 토닝, 점 제거)를 하며, 월, 수, 금요일은 저녁 8시까지 진료합니다."
   ),
   title: { default: "논산 한의원 광명당한의원, 강경 SINCE 1966", template: `%s, ${NAME}` },
+  verification: { other: { "naver-site-verification": "cbbda4def29a9e38a2825688a2f2195c7e5d7e65" } }, // Naver Search Advisor ownership
 };
 
 // local-business structured data: name/address/phone/hours must match the footer and Naver Place (NAP consistency)

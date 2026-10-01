@@ -45,7 +45,7 @@ export default function InquiryControls({ id, name, status: initialStatus, memo:
 
   return (
     <>
-      <td data-label="상태">
+      <td className="ad-c-status">
         <select
           value={status}
           aria-label={`${name} 상태`}
@@ -61,7 +61,7 @@ export default function InquiryControls({ id, name, status: initialStatus, memo:
           ))}
         </select>
       </td>
-      <td data-label="특이사항">
+      <td className="ad-c-memo">
         <textarea
           className="ad-memo"
           defaultValue={initialMemo}

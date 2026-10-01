@@ -6,19 +6,21 @@ import InquiryControls from "./inquiry-controls";
 
 const STATUS_OPTIONS = STATUSES.map((s): [string, string] => [s, STATUS_LABEL[s]]);
 const TABS: [string, string][] = [["all", "전체"], ...STATUS_OPTIONS];
-const fmt = new Intl.DateTimeFormat("ko-KR", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Seoul" });
+const timeFmt = new Intl.DateTimeFormat("ko-KR", { timeStyle: "short", timeZone: "Asia/Seoul" });
 const dayKey = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Seoul" }); // en-CA formats as YYYY-MM-DD
 const weekday = new Intl.DateTimeFormat("ko-KR", { weekday: "short", timeZone: "Asia/Seoul" });
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const CHART_DAYS = 30;
+const PAGE_SIZE = 30;
 
-type SearchParams = { status?: string; q?: string; date?: string };
+type SearchParams = { status?: string; q?: string; date?: string; page?: string };
 
-function viewHref({ status, q, date }: SearchParams): string {
+function viewHref({ status, q, date, page }: { status?: string; q?: string; date?: string; page?: number }): string {
   const p = new URLSearchParams();
   if (status && status !== "all") p.set("status", status);
   if (q) p.set("q", q);
   if (date) p.set("date", date);
+  if (page && page > 1) p.set("page", String(page));
   return p.toString() ? `/admin?${p}` : "/admin";
 }
 
@@ -33,7 +35,7 @@ function recentDays(): string[] {
 
 export default async function AdminPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   await requireAdmin();
-  const { status, q, date: rawDate } = await searchParams;
+  const { status, q, date: rawDate, page: rawPage } = await searchParams;
   const date = rawDate && DATE_RE.test(rawDate) ? rawDate : undefined;
   const mode = storeMode();
 
@@ -69,6 +71,25 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
   const activeStatus = STATUSES.includes(status as InquiryStatus) ? (status as InquiryStatus) : "all";
   const shown = activeStatus === "all" ? dated : dated.filter((i) => i.status === activeStatus);
 
+  // ponytail: pages are sliced from the full list in memory; move limit/offset into the query if it grows to thousands
+  const pageCount = Math.max(1, Math.ceil(shown.length / PAGE_SIZE));
+  const page = Math.min(pageCount, Math.max(1, Math.floor(Number(rawPage)) || 1));
+  const pageItems = shown.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+  const shownPerDay = new Map<string, number>();
+  for (const item of shown) {
+    const d = dayOf(item.created_at);
+    shownPerDay.set(d, (shownPerDay.get(d) ?? 0) + 1);
+  }
+  const groups: [string, Inquiry[]][] = []; // newest first, so each day is one consecutive run
+  for (const item of pageItems) {
+    const d = dayOf(item.created_at);
+    if (groups.at(-1)?.[0] === d) groups.at(-1)![1].push(item);
+    else groups.push([d, [item]]);
+  }
+  const today = dayKey.format(Date.now());
+  const yesterday = dayKey.format(Date.now() - 86_400_000);
+  const groupLabel = (d: string) => (d === today ? "오늘" : d === yesterday ? "어제" : dayLabel(d));
+
   return (
     <main className="ad-page">
       {mode === "local" && <p className="ad-banner">로컬 저장소(개발용)입니다. 배포 전에 Supabase를 연결해 주세요.</p>}
@@ -99,40 +120,54 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
       ) : shown.length === 0 ? (
         <p className="ad-empty">문의가 없습니다.</p>
       ) : (
-        <table className="ad-table">
-          <thead>
-            <tr>
-              <th>접수일시</th>
-              <th>이름</th>
-              <th>연락처</th>
-              <th>상담 항목</th>
-              <th>SMS 동의</th>
-              <th>상태</th>
-              <th>특이사항</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {shown.map((item) => {
-              const del = deleteInquiryAction.bind(null, item.id);
-              return (
-                <tr key={item.id}>
-                  <td data-label="접수일시">{fmt.format(new Date(item.created_at))}</td>
-                  <td data-label="이름">{item.name}</td>
-                  <td data-label="연락처"><a href={`tel:${item.phone}`}>{item.phone}</a></td>
-                  <td data-label="상담 항목">{item.item}</td>
-                  <td data-label="SMS 동의">{item.sms_consent ? "예" : "아니오"}</td>
-                  <InquiryControls id={item.id} name={item.name} status={item.status} memo={item.memo} options={STATUS_OPTIONS} />
-                  <td data-label="삭제">
-                    <form action={del}>
-                      <ConfirmSubmit confirmMessage={`${item.name}님의 문의를 삭제할까요? 삭제하면 되돌릴 수 없습니다.`} />
-                    </form>
-                  </td>
+        <>
+          <table className="ad-table">
+            <thead>
+              <tr>
+                <th>시간</th>
+                <th>이름 · 연락처</th>
+                <th>상담 항목</th>
+                <th>상태</th>
+                <th>특이사항</th>
+                <th><span className="ad-sr">삭제</span></th>
+              </tr>
+            </thead>
+            {groups.map(([day, items]) => (
+              <tbody key={day}>
+                <tr className="ad-group">
+                  <th colSpan={6} scope="colgroup">{groupLabel(day)} <span>{shownPerDay.get(day)}건</span></th>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                {items.map((item) => {
+                  const del = deleteInquiryAction.bind(null, item.id);
+                  return (
+                    <tr key={item.id} className={`ad-row ad-row-${item.status}`}>
+                      <td className="ad-c-time">{timeFmt.format(new Date(item.created_at))}</td>
+                      <td className="ad-c-who">
+                        <strong>{item.name}</strong>
+                        {item.sms_consent && <span className="ad-tag">SMS 동의</span>}
+                        <a href={`tel:${item.phone}`}>{item.phone}</a>
+                      </td>
+                      <td className="ad-c-item">{item.item}</td>
+                      <InquiryControls id={item.id} name={item.name} status={item.status} memo={item.memo} options={STATUS_OPTIONS} />
+                      <td className="ad-c-del">
+                        <form action={del}>
+                          <ConfirmSubmit confirmMessage={`${item.name}님의 문의를 삭제할까요? 삭제하면 되돌릴 수 없습니다.`} />
+                        </form>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            ))}
+          </table>
+          {pageCount > 1 && (
+            <nav className="ad-pager" aria-label="페이지">
+              {page > 1 ? <a href={viewHref({ status: activeStatus, q, date, page: page - 1 })}>이전</a> : <span>이전</span>}
+              <p>{(page - 1) * PAGE_SIZE + 1}–{(page - 1) * PAGE_SIZE + pageItems.length} <span>/ 총 {shown.length}건</span></p>
+              {page < pageCount ? <a href={viewHref({ status: activeStatus, q, date, page: page + 1 })}>다음</a> : <span>다음</span>}
+            </nav>
+          )}
+        </>
       )}
     </main>
   );
