@@ -45,13 +45,27 @@ export async function logout(): Promise<void> {
   redirect("/admin/login");
 }
 
-export async function updateInquiryAction(id: string, formData: FormData): Promise<void> {
+// autosave from the row controls: writes only the fields given, reports failure instead of throwing
+export async function updateInquiryAction(id: string, patch: { status?: string; memo?: string }): Promise<{ ok: boolean }> {
   await requireAdmin();
-  const status = String(formData.get("status") || "");
-  const memo = String(formData.get("memo") || "");
-  if (!id || !STATUSES.includes(status as InquiryStatus) || memo.length > 2000) return;
-  await updateInquiry(id, { status: status as InquiryStatus, memo });
-  revalidatePath("/admin");
+  const { status, memo } = (patch ?? {}) as Record<string, unknown>;
+  const clean: { status?: InquiryStatus; memo?: string } = {};
+  if (status !== undefined) {
+    if (!STATUSES.includes(status as InquiryStatus)) return { ok: false };
+    clean.status = status as InquiryStatus;
+  }
+  if (memo !== undefined) {
+    if (typeof memo !== "string" || memo.length > 2000) return { ok: false };
+    clean.memo = memo;
+  }
+  if (!id || Object.keys(clean).length === 0) return { ok: false };
+  try {
+    await updateInquiry(id, clean);
+  } catch {
+    return { ok: false };
+  }
+  if (clean.status) revalidatePath("/admin"); // tab counts and filtered lists depend on status; memo edits don't
+  return { ok: true };
 }
 
 export async function deleteInquiryAction(id: string): Promise<void> {

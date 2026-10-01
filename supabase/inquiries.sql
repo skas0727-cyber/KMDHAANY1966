@@ -8,9 +8,13 @@ create table if not exists public.inquiries (
   phone text not null check (phone ~ '^[0-9-]{9,14}$'),
   item text not null check (char_length(item) between 1 and 60),
   sms_consent boolean not null default false,
-  status text not null default 'new' check (status in ('new', 'in_progress', 'done')),
+  status text not null default 'new',
   memo text not null default '' check (char_length(memo) <= 2000)
 );
+
+-- status values (STATUSES in app/inquiries.ts); drop + add so re-running also upgrades older tables
+alter table public.inquiries drop constraint if exists inquiries_status_check;
+alter table public.inquiries add constraint inquiries_status_check check (status in ('new', 'in_progress', 'hold', 'done'));
 
 create index if not exists inquiries_created_at_idx on public.inquiries (created_at desc);
 

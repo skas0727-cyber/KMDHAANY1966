@@ -4,11 +4,11 @@ import { randomUUID } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-export type InquiryStatus = "new" | "in_progress" | "done";
+export type InquiryStatus = "new" | "in_progress" | "hold" | "done";
 export type Inquiry = { id: string; created_at: string; name: string; phone: string; item: string; sms_consent: boolean; status: InquiryStatus; memo: string };
 
-export const STATUS_LABEL: Record<InquiryStatus, string> = { new: "신규", in_progress: "상담중", done: "완료" };
-export const STATUSES: InquiryStatus[] = ["new", "in_progress", "done"];
+export const STATUS_LABEL: Record<InquiryStatus, string> = { new: "신규", in_progress: "진행중", hold: "보류", done: "완료" };
+export const STATUSES: InquiryStatus[] = ["new", "in_progress", "hold", "done"];
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
