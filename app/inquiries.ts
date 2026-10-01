@@ -5,7 +5,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 export type InquiryStatus = "new" | "in_progress" | "hold" | "done";
-export type Inquiry = { id: string; created_at: string; name: string; phone: string; item: string; sms_consent: boolean; status: InquiryStatus; memo: string };
+export type Inquiry = { id: string; created_at: string; name: string; phone: string; item: string; status: InquiryStatus; memo: string };
 
 export const STATUS_LABEL: Record<InquiryStatus, string> = { new: "신규", in_progress: "진행중", hold: "보류", done: "완료" };
 export const STATUSES: InquiryStatus[] = ["new", "in_progress", "hold", "done"];
@@ -52,7 +52,7 @@ async function writeLocal(rows: Inquiry[]): Promise<void> {
   await writeFile(DATA_FILE, JSON.stringify(rows, null, 2), "utf8");
 }
 
-export async function createInquiry(input: { name: string; phone: string; item: string; sms_consent: boolean }): Promise<void> {
+export async function createInquiry(input: { name: string; phone: string; item: string }): Promise<void> {
   const mode = storeMode();
   if (mode === "unconfigured") throw new Error("inquiry store not configured");
   if (mode === "supabase") {

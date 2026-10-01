@@ -43,14 +43,14 @@ export async function POST(req: Request) {
   if (typeof body !== "object" || body === null) {
     return Response.json({ error: "잘못된 요청입니다" }, { status: 400 });
   }
-  const { name, phone, item, privacy, sms, company } = body as Record<string, unknown>;
+  const { name, phone, item, privacy, company } = body as Record<string, unknown>;
 
   // honeypot: hidden field only bots fill in — pretend success, store nothing
   if (typeof company === "string" && company.trim() !== "") {
     return Response.json({ ok: true }, { status: 201 });
   }
 
-  if (typeof name !== "string" || typeof phone !== "string" || typeof item !== "string" || typeof sms !== "boolean" || privacy !== true) {
+  if (typeof name !== "string" || typeof phone !== "string" || typeof item !== "string" || privacy !== true) {
     return Response.json({ error: "입력값을 확인해 주세요" }, { status: 400 });
   }
   const trimmedName = name.trim();
@@ -67,7 +67,7 @@ export async function POST(req: Request) {
   }
 
   try {
-    await createInquiry({ name: trimmedName, phone: trimmedPhone, item: trimmedItem, sms_consent: sms });
+    await createInquiry({ name: trimmedName, phone: trimmedPhone, item: trimmedItem });
   } catch (err) {
     console.error("createInquiry failed", err);
     return Response.json({ error: "잠시 후 다시 시도해 주세요" }, { status: 500 });

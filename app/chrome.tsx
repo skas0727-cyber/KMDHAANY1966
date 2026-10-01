@@ -5,8 +5,10 @@ import { usePathname } from "next/navigation";
 import Script from "next/script";
 import "./chrome.css";
 import { BLOG, PLACE, KAKAO_CHANNEL, KAKAO_PLACE, TEL, TEL_LINK, ADDRESS, KAKAO_JS_KEY } from "./site";
+import PrivacyPolicy from "./privacy-policy";
 
 const EXT = { target: "_blank", rel: "noreferrer" };
+const openPrivacy = () => (document.getElementById("privacy") as HTMLDialogElement).showModal();
 declare global {
   interface Window { kakao: any }
 }
@@ -104,7 +106,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
     const res = await fetch("/api/inquiries", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: f.get("name"), phone: f.get("tel"), item: f.get("item"), privacy: f.get("privacy") === "on", sms: f.get("sms") === "on", company: f.get("company") }),
+      body: JSON.stringify({ name: f.get("name"), phone: f.get("tel"), item: f.get("item"), privacy: f.get("privacy") === "on", company: f.get("company") }),
     }).catch(() => null);
     setSending(false);
     if (res?.ok) {
@@ -212,7 +214,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
               <p className="ft-name">광명당한의원 <span>대표 남인우</span></p>
               <p className="ft-biz"><span>{ADDRESS}</span><span>사업자등록번호 501-06-66851</span><span>전화 {TEL}</span></p>
             </div>
-            <button className="ft-prv" onClick={() => (document.getElementById("privacy") as HTMLDialogElement).showModal()}>개인정보처리방침</button>
+            <button className="ft-prv" onClick={openPrivacy}>개인정보처리방침</button>
           </div>
           <p className="ft-copy">© 광명당한의원. All rights reserved.<br />사진은 기존 촬영본을 AI로 보정하거나 진료 설명을 위해 생성한 이미지입니다.</p>
         </div>
@@ -222,7 +224,7 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
         <div>
           <form method="dialog"><button aria-label="닫기">×</button></form>
           <h3>개인정보처리방침</h3>
-          <p>광명당한의원 개인정보처리방침 내용을 입력하세요.</p>
+          <PrivacyPolicy />
         </div>
       </dialog>
 
@@ -257,11 +259,13 @@ export default function Chrome({ children }: { children: React.ReactNode }) {
               ))}
             </select>
           </div>
-          {/* PIPA Art.15 notice: items, purpose, retention, right to refuse (retention period = owner decision) */}
-          <p className="cs-notice">수집 항목: 이름, 연락처, 상담 항목. 이용 목적: 상담 및 예약 안내. 보유 기간: 상담 완료 후 1년. 동의를 거부할&nbsp;수&nbsp;있으며, 거부 시 온라인 상담 신청이 제한됩니다.</p>
+          {/* PIPA Art.15 notice: items, purpose, retention, right to refuse; one consent only, no optional (marketing) items */}
+          <p className="cs-notice">
+            수집 항목: 이름, 연락처, 상담 항목. 이용 목적: 상담 신청 접수, 전화·문자를 통한 상담 및 예약 안내. 보유 기간: 접수일로부터 1년. 동의를 거부할&nbsp;수&nbsp;있으며, 거부 시 온라인 상담 신청이 제한됩니다.{" "}
+            <button type="button" className="cs-policy" onClick={openPrivacy}>개인정보처리방침 보기</button>
+          </p>
           <div className="cs-agree">
-            <label><input name="privacy" type="checkbox" required /> 개인정보 수집 및 이용 동의(필수)</label>
-            <label><input name="sms" type="checkbox" /> SMS 수신 동의(선택)</label>
+            <label><input name="privacy" type="checkbox" required /> 위 내용에 모두 동의합니다</label>
           </div>
           {/* honeypot: hidden from people, bots fill it and get silently dropped */}
           <input name="company" className="cs-hp" tabIndex={-1} autoComplete="off" aria-hidden="true" />

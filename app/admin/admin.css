@@ -80,7 +80,6 @@
 .ad-c-who { width: 180px; }
 .ad-c-who strong { font-weight: 700; }
 .ad-c-who a { display: block; color: var(--blue); }
-.ad-tag { display: inline-block; margin-left: 6px; padding: 0 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 11px; line-height: 18px; color: var(--gray); vertical-align: 1px; }
 .ad-c-status { width: 110px; }
 .ad-c-memo { width: 40%; }
 .ad-c-del { width: 72px; text-align: right; }

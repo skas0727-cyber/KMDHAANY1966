@@ -142,6 +142,7 @@ html:has(.mn.is-open) { overflow: hidden; }
 .cs-inputs > * { width: 100%; padding: 14px; border: 1px solid #e5e5e5; border-radius: 8px; font: inherit; font-size: 16px; background: #fff; color: #111; } /* 16px: iOS Safari zooms into smaller inputs */
 .cs-inputs > *:focus-visible { outline: 2px solid #2563eb; outline-offset: 1px; border-color: #2563eb; }
 .cs-notice { font-size: 12px; line-height: 1.6; color: #888; }
+.cs-policy { color: #555; text-decoration: underline; text-underline-offset: 2px; }
 .cs-agree { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13px; color: #555; }
 .cs-agree label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
 .cs-submit { padding: 14px; border-radius: 10px; background: #2563eb; color: #fff; font-size: 16px; font-weight: 700; transition: background .2s; }

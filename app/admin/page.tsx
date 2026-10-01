@@ -144,7 +144,6 @@ export default async function AdminPage({ searchParams }: { searchParams: Promis
                       <td className="ad-c-time">{timeFmt.format(new Date(item.created_at))}</td>
                       <td className="ad-c-who">
                         <strong>{item.name}</strong>
-                        {item.sms_consent && <span className="ad-tag">SMS 동의</span>}
                         <a href={`tel:${item.phone}`}>{item.phone}</a>
                       </td>
                       <td className="ad-c-item">{item.item}</td>

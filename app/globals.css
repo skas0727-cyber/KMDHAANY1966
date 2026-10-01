@@ -39,6 +39,15 @@ button { font: inherit; cursor: pointer; background: none; border: 0; }
 .privacy::backdrop { background: rgba(0, 0, 0, .5); }
 .privacy form { position: absolute; top: 10px; right: 16px; font-size: 28px; }
 .privacy h3 { font-size: 24px; margin-bottom: 20px; }
+.privacy-body h4 { margin: 28px 0 8px; font-size: 16px; font-weight: 700; }
+.privacy-body p, .privacy-body li { font-size: 14px; line-height: 1.8; color: #444; }
+.privacy-body ul { padding-left: 18px; list-style: disc; }
+.privacy-body p + ul, .privacy-body ul + p, .privacy-table + ul { margin-top: 6px; }
+.privacy-table { margin: 8px 0; overflow-x: auto; } /* wide tables scroll inside the dialog on phones */
+.privacy-table table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 13px; line-height: 1.6; }
+.privacy-table th, .privacy-table td { padding: 8px 10px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+.privacy-table th { background: #f7f7f7; font-weight: 600; }
+@media (max-width: 767px) { .privacy > div { padding: 32px 20px; } }
 
 /* sub pages (/skin, /accident, /diet): full-bleed photo hero under one shared dark tint, white text on the left */
 .sub-hero { position: relative; display: flex; align-items: center; min-height: max(560px, 100vh); padding: 160px 20px 100px; overflow: hidden; background: var(--black); color: var(--white); }
