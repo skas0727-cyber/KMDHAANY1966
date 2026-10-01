@@ -9,7 +9,6 @@ export type LoginState = { error: string };
 
 const LOGIN_ERRORS: Record<Exclude<LoginResult, "ok">, string> = {
   invalid: "이메일 또는 비밀번호가 올바르지 않습니다",
-  forbidden: "관리자 권한이 없는 계정입니다",
   unconfigured: "관리자 로그인이 설정되지 않았습니다",
   error: "잠시 후 다시 시도하세요",
 };

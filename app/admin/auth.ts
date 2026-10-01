@@ -28,10 +28,10 @@ function signingKey(secret: string): Buffer {
 }
 const sign = (secret: string, exp: number) => createHmac("sha256", signingKey(secret)).update(`${VERSION}.${exp}`).digest("hex");
 
-export type LoginResult = "ok" | "invalid" | "forbidden" | "unconfigured" | "error";
+export type LoginResult = "ok" | "invalid" | "unconfigured" | "error";
 
-// Supabase Auth password grant; only accounts with app_metadata.role = "admin" get in
-// (app_metadata is writable only via SQL / service role, never by the user, so a stray sign-up can't become admin)
+// Supabase Auth password grant: every user in Authentication → Users can log in, so keep
+// "Allow new users to sign up" off in Supabase, or anyone could create an account and read the inquiries
 export async function checkLogin(email: string, password: string): Promise<LoginResult> {
   const mode = storeMode();
   if (mode === "unconfigured") return "unconfigured";
@@ -45,9 +45,8 @@ export async function checkLogin(email: string, password: string): Promise<Login
     body: JSON.stringify({ email, password }),
   }).catch(() => null);
   if (!res) return "error";
-  if (!res.ok) return res.status === 400 ? "invalid" : "error"; // 400 = wrong email/password or unconfirmed email
-  const data = (await res.json()) as { user?: { app_metadata?: { role?: unknown } } };
-  return data.user?.app_metadata?.role === "admin" ? "ok" : "forbidden";
+  if (res.ok) return "ok";
+  return res.status === 400 ? "invalid" : "error"; // 400 = wrong email/password or unconfirmed email
 }
 
 export async function setAdminCookie(): Promise<void> {

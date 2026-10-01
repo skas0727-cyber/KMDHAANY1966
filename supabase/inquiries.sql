@@ -21,11 +21,5 @@ alter table public.inquiries enable row level security;
 -- backstop in case RLS is ever disabled or a policy is added by mistake
 revoke all on public.inquiries from anon, authenticated;
 
--- /admin login (app/admin/auth.ts): first create the user in Authentication → Users → Add user
--- (check "Auto Confirm User"), then put its email below. Only role = admin can log in.
-update auth.users
-set raw_app_meta_data = raw_app_meta_data || '{"role":"admin"}'
-where email = 'admin@example.com';
-
--- check: lists the admin accounts (empty = the email above doesn't match a created user)
-select email from auth.users where raw_app_meta_data->>'role' = 'admin';
+-- /admin login (app/admin/auth.ts): every user in Authentication → Users can log in.
+-- Add them via Add user (check "Auto Confirm User") and turn OFF "Allow new users to sign up".
