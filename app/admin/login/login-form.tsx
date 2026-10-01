@@ -9,6 +9,8 @@ export default function LoginForm() {
 
   return (
     <form action={formAction} className="ad-login-form">
+      <label htmlFor="ad-email">이메일</label>
+      <input id="ad-email" name="email" type="email" autoComplete="username" required />
       <label htmlFor="ad-password">비밀번호</label>
       <input id="ad-password" name="password" type="password" autoComplete="current-password" required />
       {state.error && <p className="ad-error" role="alert">{state.error}</p>}
