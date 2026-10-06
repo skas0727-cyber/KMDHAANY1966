@@ -1,10 +1,17 @@
 import Faq, { SubHero, Head, Cta, Notice } from "../faq";
 import { pageMeta } from "../site";
+import { JsonLd, graph, webPage, therapy } from "../seo";
 
 export const metadata = pageMeta(
   "/diet",
   "논산 다이어트 한의원, 체질 맞춤 다이어트 한약",
-  "논산 강경 다이어트 한의원 광명당한의원. 붓기형, 식욕폭주형, 냉증형 등 비만 유형과 체질을 진단해 체질에 맞는 다이어트 한약을 처방하고, 굶지 않는 식단과 생활 관리도 안내합니다."
+  "논산 강경 다이어트 한의원 광명당한의원. 붓기형, 식욕폭주형, 냉증형 등 비만 유형과 체질을 진단해 체질에 맞는 다이어트 한약(감비환, 감비탕 1제 145,000원)을 처방하고, 굶지 않는 식단과 생활 관리도 안내합니다.",
+  { image: ["/img/diet-wide.jpg", 2400, 1357, "논산 다이어트 한의원 광명당한의원 체질 맞춤 다이어트 한약"], keywords: ["논산 다이어트 한의원", "논산 다이어트 한약", "강경 다이어트 한의원", "한방 다이어트 논산", "다이어트 한약 가격", "감비환", "산후 다이어트 한의원"] }
+);
+
+const LD = graph(
+  webPage("/diet", "논산 다이어트 한의원, 체질 맞춤 다이어트 한약", "비만 유형과 체질을 진단해 처방하는 광명당한의원의 한방 다이어트: 프로그램과 비용, 진료 과정.", { image: "/img/diet-wide.jpg", about: [{ "@type": "MedicalCondition", name: "비만" }] }),
+  therapy("한방 다이어트 (체질 맞춤 다이어트 한약)", "붓기형, 식욕폭주형, 냉증형 등 비만 유형과 체질을 진단한 뒤 식욕 조절과 대사를 돕는 다이어트 한약(감비환, 감비탕)을 처방합니다.", "/diet", [{ name: "맞춤 다이어트 한약 1제 30포(15일분)", price: 145000, description: "비급여, 체질과 처방에 따라 달라질 수 있음" }]),
 );
 
 const TABS: [string, string][] = [["type", "비만 유형"], ["program", "프로그램과 비용"], ["process", "진료 과정"], ["faq", "자주 묻는 질문"]];
@@ -78,6 +85,7 @@ export default function Diet() {
       ]} />
 
       <Cta title="나에게 맞는 다이어트가 궁금하다면" text="체질을 진단한 뒤 알맞은 프로그램을 알려 드립니다." />
+      <JsonLd data={LD} />
     </main>
   );
 }

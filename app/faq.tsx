@@ -58,7 +58,7 @@ export function SubHero({ img, wide, pos, tabs, children }: { img: string; wide?
     <section className="sub-hero">
       <picture>
         {wide && <source media="(min-width: 768px)" srcSet={wide} />}
-        <img className="sub-hero-img" src={img} alt="" style={pos ? { objectPosition: pos } : undefined} />
+        <img className="sub-hero-img" src={img} alt="" fetchPriority="high" style={pos ? { objectPosition: pos } : undefined} />
       </picture>
       <div className="sub-hero-inner">
         <div data-aos>

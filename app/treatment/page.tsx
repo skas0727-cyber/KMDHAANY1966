@@ -1,11 +1,13 @@
 import Faq, { Head, Cta, Notice } from "../faq";
 import { pageMeta, TEL } from "../site";
 import HeroTabs from "../hero-tabs";
+import { JsonLd, graph, webPage, therapy } from "../seo";
 
 export const metadata = pageMeta(
   "/treatment",
   "논산 한의원 한약 가격과 보약, 약침 패키지",
-  "논산 강경 한의원 광명당한의원. 으뜸 보약, 맞춤 치료약, 부인과 치료약, 다이어트 한약 가격과 고주파(RAFOS Premium), 체외충격파, 약침, 추나요법 치료 안내와 약침 패키지 가격을 확인하세요."
+  "논산 강경 한의원 광명당한의원. 으뜸 보약(1제 40만원), 맞춤 치료약, 부인과 치료약, 다이어트 한약 가격과 고주파(RAFOS Premium), 체외충격파, 약침, 추나요법 치료 안내와 약침 패키지 가격을 확인하세요.",
+  { image: ["/img/treatment-wide.jpg", 2000, 1131, "논산 한의원 광명당한의원 한약과 보약"], keywords: ["논산 한약", "논산 보약", "논산 보약 가격", "논산 추나요법", "논산 약침", "논산 체외충격파", "논산 고주파 치료", "강경 한약", "녹용 보약", "한약 가격"] }
 );
 
 // section links shown in the hero; each swaps in its own still life (/img/<bg>[-wide].jpg)
@@ -50,6 +52,20 @@ const FAQ = [
   ["패키지 치료도 실손보험 청구가 되나요?", "네, 실손보험 청구가 가능합니다. 가입한 보험 상품에 따라 청구 범위가 다를\u00A0수\u00A0있어 진료 후 안내해 드립니다."],
   ["초진에는 추가 비용이 있나요?", "네. 초진 시에는 진찰료 등 별도 추가 금액이 발생할\u00A0수\u00A0있습니다. 정확한 비용은 내원 시 안내해 드립니다."],
 ];
+
+const won = (s: string) => Number(s.replace(/[^0-9]/g, "")) * (s.includes("만원") ? 10000 : 1);
+const LD = graph(
+  webPage("/treatment", "논산 한의원 한약 가격과 보약, 약침 패키지", "광명당한의원의 으뜸 보약, 맞춤 치료약, 부인과 치료약, 다이어트 한약 가격과 고주파, 체외충격파, 약침, 추나요법 치료 안내, 약침 패키지 가격.", { image: "/img/treatment-wide.jpg" }),
+  therapy("한약 처방 (으뜸 보약, 맞춤 치료약, 부인과 치료약)", "문진과 진찰 뒤 체질과 증상에 맞춰 처방하는 한약입니다. 으뜸 보약은 1제 40포(20일분), 치료약은 1제 30포(10일분) 기준.", "/treatment#bohyak", [
+    ...BOHYAK.map(([name]) => ({ name: `으뜸 보약 ${name}`, price: 400000, description: "1제 40포(20일분), 초진 시 진찰료 별도" })),
+    ...CUSTOM_MEDS.map(([name, price]) => ({ name: `맞춤 치료약 (${name})`, price: won(price), description: "1제 30포(10일분)" })),
+    ...GYNECOLOGY.map(([name, price]) => ({ name: `부인과 치료약 (${name})`, price: won(price), description: "1제 30포(10일분)" })),
+    { name: "다이어트 한약 감비환과 감비탕 1제 30포(15일분)", price: 145000 },
+  ]),
+  ...CARE.map(([, name, desc]) => therapy(name, desc, "/treatment#care")),
+  therapy("약침 패키지", "녹용약침과 자하거약침(태반약침)을 여러 회차로 묶은 패키지입니다. 실손보험 청구 가능.", "/treatment#package",
+    PACKAGES.flatMap(([, items]) => items.flatMap(([name, , rows]) => rows.map(([k, v]) => ({ name: `${name} ${k}`, price: won(v) }))))),
+);
 
 function PriceRows({ items }: { items: [string, string][] }) {
   return (
@@ -149,6 +165,7 @@ export default function Treatment() {
       ]} />
 
       <Cta title="어떤 처방이 맞을지 궁금하다면" text="진찰 후 체질과 증상에 맞는 한약과 치료를 안내해 드립니다." />
+      <JsonLd data={LD} />
     </main>
   );
 }

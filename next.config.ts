@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
           { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
       },
+      // photos keep their file names across deploys, so browsers may hold them a week and revalidate in the background (PageSpeed "efficient cache policy")
+      { source: "/img/:path*", headers: [{ key: "Cache-Control", value: "public, max-age=604800, stale-while-revalidate=2592000" }] },
       { source: "/admin", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
       { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex" }] },
     ];

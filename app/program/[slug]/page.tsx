@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Faq, { Head, Cta, Notice } from "../../faq";
 import { CAT, PROGRAMS, getProgram } from "../../programs";
 import { pageMeta, SITE_URL, NAME, TEL, TEL_LINK } from "../../site";
+import { JsonLd, graph, webPage, breadcrumb, clinicRef } from "../../seo";
 import "./view.css";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -17,7 +18,11 @@ export async function generateMetadata({ params }: Props) {
   const p = getProgram(slug);
   if (!p) return {};
   const first = p.intro.split(". ")[0].replace(/\.$/, "") + ".";
-  return pageMeta(`/program/${p.slug}`, `논산 ${p.name} 가격`, `${p.summary}. ${first} 광명당한의원 가격 안내(VAT 별도).`);
+  const cheapest = p.options[0];
+  return pageMeta(`/program/${p.slug}`, `논산 ${p.name} 가격`, `${p.summary}. ${first} 광명당한의원 ${cheapest.name} ${cheapest.price}부터, 가격 안내(VAT 별도).`, {
+    image: [`/img/program-${p.cat}-wide.jpg`, 2400, 1357, `논산 피부 한의원 광명당한의원 ${p.name}`],
+    keywords: [`논산 ${p.name}`, `논산 ${p.name} 가격`, `${p.name} 가격`, `강경 ${p.name}`, ...p.concerns.map((c) => `논산 ${c} 시술`)],
+  });
 }
 
 export default async function Page({ params }: Props) {
@@ -25,16 +30,20 @@ export default async function Page({ params }: Props) {
   const p = getProgram(slug);
   if (!p) notFound();
 
-  const ld = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    name: p.name,
-    description: p.summary,
-    url: `${SITE_URL}/program/${p.slug}`,
-    provider: { "@id": `${SITE_URL}/#clinic`, "@type": "MedicalClinic", name: NAME, url: SITE_URL },
-    areaServed: "논산시",
-    offers: p.options.map((o) => ({ "@type": "Offer", name: o.name, price: Number(o.price.replace(/[^0-9]/g, "")), priceCurrency: "KRW", description: (o.first ? "첫 방문 1회, " : "") + "VAT 별도" })),
-  };
+  const path = `/program/${p.slug}`;
+  const ld = graph(
+    webPage(path, `논산 ${p.name} 가격, ${NAME}`, `${p.summary}. ${p.intro}`, { image: `/img/program-${p.cat}-wide.jpg` }),
+    breadcrumb([["피부 프로그램", "/program"], [p.name, path]]),
+    {
+      "@type": ["Service", "MedicalTherapy"],
+      name: p.name,
+      description: `${p.summary}. ${p.intro}`,
+      url: `${SITE_URL}${path}`,
+      provider: clinicRef,
+      areaServed: ["논산시", "강경읍"],
+      offers: p.options.map((o) => ({ "@type": "Offer", name: o.name, price: Number(o.price.replace(/[^0-9]/g, "")), priceCurrency: "KRW", description: `${o.spec}, ${o.first ? "첫 방문 1회, " : ""}VAT 별도`, availability: "https://schema.org/InStock", seller: clinicRef })),
+    },
+  );
 
   return (
     <main className="skin-clinic">
@@ -116,7 +125,7 @@ export default async function Page({ params }: Props) {
 
       <Cta title={`${p.name}, 상담으로 먼저 확인해 보세요`} text="피부 상태를 진단한 뒤 알맞은 시술과 횟수를 안내해 드립니다." />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+      <JsonLd data={ld} />
     </main>
   );
 }

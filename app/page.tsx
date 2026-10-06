@@ -124,7 +124,7 @@ function Hero() {
           return (
             <li key={idx} className={d === 0 ? "on" : d === 1 ? "near" : undefined} aria-hidden={clone || undefined}>
               <a href={href} tabIndex={clone ? -1 : undefined} draggable={false}>
-                <img src={"/img/" + img} alt="" draggable={false} style={pos ? { objectPosition: pos } : undefined} />
+                <img src={"/img/" + img} alt={"광명당한의원 " + title.replace("\n", " ")} draggable={false} fetchPriority={d === 0 && !clone ? "high" : undefined} style={pos ? { objectPosition: pos } : undefined} />
                 <div><p className="hc-t">{title}</p><p className="hc-d">바로가기 &gt;</p></div>
               </a>
             </li>
@@ -157,7 +157,7 @@ function Price() {
       <div className="pr-body" key={tab}>
         <a className="pr-main" href={`/program/${progs[0].slug}`}>
           {/* own 3:2 shot per category (model in the right 45%): desktop crops to the model, mobile shows the wide frame */}
-          <img src={`/img/skin/price-${CATEGORIES[tab][0]}.jpg`} alt="" loading="lazy" />
+          <img src={`/img/skin/price-${CATEGORIES[tab][0]}.jpg`} alt={`논산 피부 한의원 ${CATEGORIES[tab][1]} 시술`} loading="lazy" />
           <div className="pr-overlay">
             <strong>{CATEGORIES[tab][1]}</strong>
             <p>{progs[0].summary}</p>
@@ -312,7 +312,7 @@ function Special() {
       <div className="sp-slider">
         {SPECIAL.map(([img, title, text, more, href], k) => (
           <div key={title} className={"sp-slide" + (k === i ? " on" : "")} inert={k !== i}>
-            <img src={"/img/" + img} alt="" loading="lazy" />
+            <img src={"/img/" + img} alt={title} loading="lazy" />
             <div className="sp-box">
               <div className="sp-dots">
                 {SPECIAL.map(([, t], b) => <button key={t} className={b === i ? "on" : undefined} onClick={() => setI(b)} aria-label={t} />)}

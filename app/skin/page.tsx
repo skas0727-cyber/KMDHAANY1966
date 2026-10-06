@@ -1,13 +1,16 @@
 import Faq, { SubHero, Head, Cta, Notice } from "../faq";
 import { CATEGORIES, PROGRAMS, type Program } from "../programs";
 import { pageMeta, TEL } from "../site";
+import { JsonLd, graph, webPage, therapy, itemList } from "../seo";
 
 // "피부과" is a medical-specialty name a 한의원 must not use; target "피부 한의원" instead
 export const metadata = pageMeta(
   "/skin",
   "논산 피부 한의원 슈링크, 토닝, 점 제거 가격",
-  "논산 강경 피부 한의원 광명당한의원. 기미, 검버섯, 비립종, 편평사마귀, 오타모반, 한관종 등 색소와 잡티 상담과 야누스프로 피부 분석을 진행합니다. 슈링크 리프팅, 연어주사(PDRN), PN주사 스킨부스터, 토닝, 점 제거 가격과 첫 방문 체험가(슈링크 100샷 15,000원)를 안내합니다."
+  "논산 강경 피부 한의원 광명당한의원. 기미, 검버섯, 비립종, 편평사마귀, 오타모반, 한관종 등 색소와 잡티 상담과 야누스프로 피부 분석을 진행합니다. 슈링크 리프팅, 연어주사(PDRN), PN주사 스킨부스터, 토닝, 점 제거 가격과 첫 방문 체험가(슈링크 100샷 15,000원)를 안내합니다.",
+  { image: ["/img/skin/hero-wide.jpg", 1672, 941, "논산 피부 한의원 광명당한의원 피부 클리닉"], keywords: ["논산 피부 한의원", "논산 피부 클리닉", "논산 슈링크", "논산 레이저 토닝", "논산 점 제거", "논산 기미 치료", "논산 검버섯 제거", "논산 편평사마귀", "논산 스킨부스터", "강경 피부 관리"] }
 );
+
 
 const TABS: [string, string][] = [["first", "첫 방문 체험가"], ["concern", "색소와 잡티"], ["diagnosis", "검사와 치료"], ["lifting", "리프팅"], ["booster", "스킨부스터"], ["price", "가격표"]];
 // [illustration file in /img/skin (.jpg, Higgsfield GPT Image 2), name, description]
@@ -43,7 +46,14 @@ const FAQ = [
   ["레이저토닝, 듀얼토닝, 트리플토닝은 무엇이 다른가요?", "레이저토닝은 1064nm 토닝, 듀얼토닝은 1064nm 토닝에 제네시스를 더한 것, 트리플토닝은 여기에 532nm 색소토닝까지 더한 토닝입니다. 색소 종류와 피부톤에 맞춰 권해 드립니다."],
   ["슈링크 리프팅 가격은 얼마인가요?", "슈링크 300샷은 1회 99,000원, 3회 269,000원입니다. 처음이라면 첫 방문 피부진단과 함께 슈링크 100샷을 15,000원에 체험할\u00A0수\u00A0있습니다."],
   ["시술 후 바로 일상생활이 가능한가요?", "대부분 바로 일상생활이 가능합니다. 다만 시술에 따라 붉어짐이나 딱지가 며칠 생길\u00A0수\u00A0있어 시술 전에 안내해 드립니다."],
+  ["피부과가 아닌 한의원에서도 피부 시술을 받을\u00A0수\u00A0있나요?", "광명당한의원은 피부과가 아닌 논산 강경의 한의원입니다. 야누스프로 피부 분석으로 색소와 모공, 주름 상태를 확인한 뒤 슈링크 리프팅, 레이저 토닝, 점과 잡티 제거, PN 스킨부스터 같은 피부 시술을 진행하며, 기미처럼 몸속 원인이 있는 색소는 한방 진료와 함께 관리합니다. 첫 방문 체험가로 가볍게 시작해 보세요."],
 ];
+const LD = graph(
+  webPage("/skin", "논산 피부 한의원 슈링크, 토닝, 점 제거 가격", "광명당한의원 피부 클리닉: 첫 방문 체험가, 색소와 잡티 상담, 야누스프로 피부 분석, 슈링크 리프팅, 스킨부스터, 시술 가격표(VAT 별도).", { image: "/img/skin/hero-wide.jpg", about: CONDITIONS.map(([, name]) => ({ "@type": "MedicalCondition", name })) }),
+  therapy("피부 관리 (슈링크 리프팅, 레이저 토닝, 점과 잡티 제거)", "야누스프로 피부 분석 뒤 색소, 탄력, 피부결 고민에 맞춰 슈링크 리프팅, 레이저, 듀얼, 트리플 토닝, Er:YAG 프락셀, PN 스킨부스터, 점과 잡티 제거를 진행합니다. 모든 가격은 VAT 별도.", "/skin",
+    FIRST.map(([name, spec, price]) => ({ name: `첫 방문 체험 ${name}`, price: Number(price.replace(/[^0-9]/g, "")), description: `${spec}, 첫 방문 1회, VAT 별도` }))),
+  itemList("피부 시술 프로그램", PROGRAMS.map((p) => [p.name, `/program/${p.slug}`])),
+);
 
 function PriceItem({ p }: { p: Program }) {
   return (
@@ -168,6 +178,7 @@ export default function Skin() {
       ]} />
 
       <Cta title="피부 고민, 지금 가볍게 시작하세요" text="첫 방문 피부진단으로 지금 상태를 확인하고, 알맞은 시술을 안내해 드립니다." />
+      <JsonLd data={LD} />
     </main>
   );
 }

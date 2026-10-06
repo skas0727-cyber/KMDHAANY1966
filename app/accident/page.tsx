@@ -1,10 +1,17 @@
 import Faq, { SubHero, Head, Cta, Notice } from "../faq";
 import { pageMeta } from "../site";
+import { JsonLd, graph, webPage, therapy } from "../seo";
 
 export const metadata = pageMeta(
   "/accident",
   "논산 교통사고 한의원, 자동차보험 본인부담금 0원",
-  "논산 강경 교통사고 한의원 광명당한의원. 자동차보험 협약 의료기관으로 전 보험사 자동차보험이 적용되어 본인부담금 없이 침과 약침, 추나요법, 한약, 한방물리요법을 받을 수 있습니다. 사고 당일 내원 가능, 월, 수, 금 야간진료."
+  "논산 강경 교통사고 한의원 광명당한의원. 자동차보험 협약 의료기관으로 전 보험사 자동차보험이 적용되어 본인부담금 없이 침과 약침, 추나요법, 한약, 한방물리요법을 받을 수 있습니다. 사고 당일 내원 가능, 월, 수, 금 야간진료.",
+  { image: ["/img/accident-wide.jpg", 2400, 1357, "논산 교통사고 한의원 광명당한의원 교통사고 후유증 치료"], keywords: ["논산 교통사고 한의원", "논산 교통사고 병원", "강경 교통사고 한의원", "교통사고 후유증 한의원", "자동차보험 한의원", "교통사고 본인부담금 0원", "논산 추나"] }
+);
+
+const LD = graph(
+  webPage("/accident", "논산 교통사고 한의원, 자동차보험 본인부담금 0원", "자동차보험 협약 의료기관 광명당한의원의 교통사고 후유증 한방 치료 안내: 증상, 치료 방법, 진료 절차.", { image: "/img/accident-wide.jpg", about: [{ "@type": "MedicalCondition", name: "교통사고 후유증" }] }),
+  therapy("교통사고 후유증 한방 치료", "침과 약침, 추나요법, 한약, 한방물리요법으로 사고 뒤 목과 허리 통증, 두통, 어혈을 치료합니다. 전 보험사 자동차보험 적용, 본인부담금 0원.", "/accident", [{ name: "자동차보험 교통사고 치료", price: 0, description: "자동차보험 적용 시 본인부담금 0원 (사고 접수번호 필요)" }]),
 );
 
 const TABS: [string, string][] = [["symptom", "이런 증상"], ["treatment", "치료 방법"], ["process", "진료 절차"], ["faq", "자주 묻는 질문"]];
@@ -80,6 +87,7 @@ export default function Accident() {
       ]} />
 
       <Cta title="사고 후 통증, 미루지 마세요" text="사고 접수번호만 있으면 오늘 바로 치료받을&nbsp;수&nbsp;있습니다." />
+      <JsonLd data={LD} />
     </main>
   );
 }

@@ -27,7 +27,7 @@ export default function HeroTabs({ tabs, selected, onSelect, children }: { tabs:
       {[...new Set([base, bg, ...(all ? tabs.map((t) => t.bg) : [])])].map((b) => (
         <picture key={b} className={b === bg ? "on" : undefined}>
           <source media="(min-width: 768px)" srcSet={`/img/${b}-wide.jpg`} />
-          <img className="sub-hero-img" src={`/img/${b}.jpg`} alt="" />
+          <img className="sub-hero-img" src={`/img/${b}.jpg`} alt="" fetchPriority={b === base ? "high" : undefined} />
         </picture>
       ))}
       <div className="sub-hero-inner">
