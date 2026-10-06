@@ -65,6 +65,7 @@ const clinic = {
   areaServed: [{ "@type": "City", name: "논산시" }, { "@type": "Place", name: "강경읍" }],
   medicalSpecialty: ["한의학", "침구", "추나요법", "교통사고 후유증", "한방 다이어트", "한방 피부 관리"],
   isAcceptingNewPatients: true,
+  amenityFeature: [{ "@type": "LocationFeatureSpecification", name: "주차 가능", value: true }],
   founder: { "@type": "Person", name: "남주희" },
   employee: DOCTORS.map((d) => ({ "@id": d["@id"] })),
   availableService: [

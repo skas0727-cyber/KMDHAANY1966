@@ -83,6 +83,7 @@
 .tr-tabs button.on { background: #111; color: #fff; }
 .tr-slider { position: relative; max-width: 1080px; margin: 32px auto; }
 .tr-frame { overflow: hidden; }
+.tr-track[hidden] { display: none; } /* inactive category: kept in the HTML for crawlers, `display: flex` below would otherwise show it */
 .tr-track { --cw: 360px; --gap: 24px; display: flex; align-items: stretch; gap: var(--gap); padding-bottom: 10px; transform: translateX(calc(50% - var(--cw) / 2 - var(--i) * (var(--cw) + var(--gap)))); transition: transform .4s; }
 .tr-card { position: relative; flex: 0 0 var(--cw); display: flex; flex-direction: column; overflow: hidden; border: 4px solid transparent; border-radius: 16px; background: rgba(0, 0, 0, .35); transform: scale(.92); transition: .35s; cursor: pointer; }
 .tr-card::before { content: ""; position: absolute; inset: 0; z-index: 1; background: rgba(0, 0, 0, .45); pointer-events: none; transition: opacity .3s; }

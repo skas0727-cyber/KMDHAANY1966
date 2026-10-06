@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 // single source for clinic facts (name/address/phone) shared by pages, metadata and structured data
+// public/llms.txt (summary for AI search) repeats hours, prices and doctors by hand: update it when those change
 export const SITE_URL = "https://kmdhaany1966.com"; // canonical, sitemap, schema
 export const NAME = "광명당한의원";
 export const BLOG = "https://blog.naver.com/kmdhaany1966";

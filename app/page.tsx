@@ -4,6 +4,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { BLOG, PLACE } from "./site";
 import { CATEGORIES, PROGRAMS } from "./programs";
 import Faq from "./faq";
+import { JsonLd, graph, webPage, clinicRef } from "./seo";
 import "./home.css";
 
 // section order + measurements follow the reference home (card hero → tabbed price → magazine → card carousel → greeting → special);
@@ -60,8 +61,12 @@ const SPECIAL: [string, string, ReactNode, string, string][] = [
 ];
 const FAQ = [
   ["논산 광명당한의원은 어디에 있나요?", "충남 논산시 강경읍 대흥로6번길 9(지번 강경읍 대흥리 32-120)에 있습니다. 네이버 지도에서 '광명당한의원'을 검색하면 길찾기를 할\u00A0수\u00A0있습니다."],
+  ["주차할 수 있나요?", "네, 주차할 수 있습니다. 오시는 길과 주차 안내가 더 필요하시면 041-745-2141로 문의해 주세요."],
   ["진료시간은 어떻게 되나요?", "월, 수, 금요일 08:30~20:00, 화, 목요일 08:30~18:00, 토요일 08:30~13:00입니다. 점심시간은 12:30~14:00이며, 접수마감은 월, 수, 금요일 19:30, 화, 목요일 17:30, 토요일 12:30입니다. 일요일과 공휴일은 휴진합니다."],
+  ["야간진료를 하나요?", "네. 월, 수, 금요일은 저녁 8시까지 진료하며 접수마감은 19:30입니다. 퇴근 후에도 침, 약침, 교통사고 치료를 받을 수 있습니다."],
+  ["토요일이나 일요일에도 진료하나요?", "토요일은 08:30~13:00까지 진료하며 접수마감은 12:30입니다. 일요일과 공휴일은 휴진합니다."],
   ["예약하고 가야 하나요?", "추나요법, 체외충격파, 고주파 치료는 예약제로 운영합니다. 그 외 진료는 예약 없이 내원하셔도 됩니다. 문의는 041-745-2141로 해 주세요."],
+  ["의료진은 누구인가요?", "1966년 할아버지 남주희 원장이 연 광명당한약방을 손자 남인우 대표원장이 이어 3대째 진료하고 있으며, 김준형 원장이 함께 진료합니다. 남인우 대표원장은 아픈 곳을 초음파로 직접 확인하고 치료 방법을 정합니다."],
   ["어떤 진료를 하나요?", "침과 약침, 추나요법, 재활과 운동치료, 교통사고 후유증 치료를 합니다. 한방 다이어트, 피부 관리(슈링크 리프팅, 레이저 토닝, 점 제거)와 비염, 감기, 안면마비 같은 한방내과 진료도 합니다."],
   ["교통사고 치료도 받을\u00A0수\u00A0있나요?", "네. 자동차보험 협약 의료기관이라 전 보험사 자동차보험이 적용되며, 본인부담금 없이 치료받을\u00A0수\u00A0있습니다. 과실 비율과 가입한 보험 조건에 따라 보험 처리 범위가 달라질\u00A0수\u00A0있어 내원 시 안내해 드립니다."],
 ];
@@ -124,7 +129,8 @@ function Hero() {
           return (
             <li key={idx} className={d === 0 ? "on" : d === 1 ? "near" : undefined} aria-hidden={clone || undefined}>
               <a href={href} tabIndex={clone ? -1 : undefined} draggable={false}>
-                <img src={"/img/" + img} alt={"광명당한의원 " + title.replace("\n", " ")} draggable={false} fetchPriority={d === 0 && !clone ? "high" : undefined} style={pos ? { objectPosition: pos } : undefined} />
+                {/* the 5 cards in view (3 + two side peeks) load up front; React would otherwise preload all 8 and starve the hero (LCP) */}
+                <img src={"/img/" + img} alt={"광명당한의원 " + title.replace("\n", " ")} draggable={false} fetchPriority={d === 0 && !clone ? "high" : undefined} loading={d > 2 ? "lazy" : undefined} style={pos ? { objectPosition: pos } : undefined} />
                 <div><p className="hc-t">{title}</p><p className="hc-d">바로가기 &gt;</p></div>
               </a>
             </li>
@@ -200,9 +206,7 @@ function Price() {
 function Story() {
   const [tab, setTab] = useState(0);
   const [i, setI] = useState(0);
-  const slides = STORY[tab][1];
-  const [, title, text] = slides[i];
-  const go = (d: number) => setI(mod(i + d, slides.length));
+  const go = (d: number) => setI(mod(i + d, STORY[tab][1].length));
 
   return (
     <section id="story" className="hs st">
@@ -210,23 +214,33 @@ function Story() {
       <div className="st-tabs">
         {STORY.map(([name], k) => <button key={name} className={k === tab ? "on" : undefined} aria-pressed={k === tab} onClick={() => { setTab(k); setI(0); }}>{name}</button>)}
       </div>
-      <div className="st-body" key={tab}>
-        <div className="st-slider">
-          {slides.length > 1 && <button className="st-arrow prev" onClick={() => go(-1)} aria-label="이전"><span>&lt;</span></button>}
-          <div className="st-frame">
-            <div className="st-track" style={{ transform: `translateX(-${i * 100}%)` }}>
-              {slides.map(([img, t, , href]) => (
-                <div key={t} className="st-slide">
-                  {href ? <a href={href} target="_blank" rel="noreferrer"><img src={"/img/" + img} alt={t} loading="lazy" /></a> : <img src={"/img/" + img} alt={t} loading="lazy" />}
+      {/* every tab and caption stays in the HTML (inactive ones `hidden`) so crawlers and AI readers, which don't run JS, see all of it */}
+      {STORY.map(([name, slides], k) => {
+        const cur = k === tab ? i : 0;
+        return (
+          <div key={name} className="st-body" hidden={k !== tab}>
+            <div className="st-slider">
+              {slides.length > 1 && <button className="st-arrow prev" onClick={() => go(-1)} aria-label="이전"><span>&lt;</span></button>}
+              <div className="st-frame">
+                <div className="st-track" style={{ transform: `translateX(-${cur * 100}%)` }}>
+                  {slides.map(([img, t, , href]) => (
+                    <div key={t} className="st-slide">
+                      {href ? <a href={href} target="_blank" rel="noreferrer"><img src={"/img/" + img} alt={t} loading="lazy" /></a> : <img src={"/img/" + img} alt={t} loading="lazy" />}
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
+              {slides.length > 1 && <button className="st-arrow next" onClick={() => go(1)} aria-label="다음"><span>&gt;</span></button>}
             </div>
+            {slides.map(([, t, text], j) => (
+              <div key={t} hidden={j !== cur}>
+                <h3>{t}</h3>
+                <p>{text}</p>
+              </div>
+            ))}
           </div>
-          {slides.length > 1 && <button className="st-arrow next" onClick={() => go(1)} aria-label="다음"><span>&gt;</span></button>}
-        </div>
-        <h3>{title}</h3>
-        <p>{text}</p>
-      </div>
+        );
+      })}
     </section>
   );
 }
@@ -249,21 +263,24 @@ function Treat() {
       <div className="tr-slider">
         <button className="tr-arrow prev" disabled={i === 0} onClick={() => setI(i - 1)} aria-label="이전">&lt;</button>
         <div className="tr-frame">
-          <div className="tr-track" key={tab} style={{ "--i": i } as CSSProperties}>
-            {cards.map(([img, name, desc, href], k) => {
-              const body = (
-                <>
-                  <div className="tr-img"><img src={"/img/" + img} alt={name} loading="lazy" /></div>
-                  <div className="tr-info"><b>{name}</b><p>{desc}</p></div>
-                </>
-              );
-              return (
-                <div key={name} className={"tr-card" + (k === i ? " on" : "")} onClick={(e) => k !== i && (e.preventDefault(), setI(k))}>
-                  {href ? <a href={href}>{body}</a> : body}
-                </div>
-              );
-            })}
-          </div>
+          {/* all categories stay in the HTML (inactive ones `hidden`) so crawlers and AI readers see every treatment */}
+          {TREAT.map(([cat, list], t) => (
+            <div key={cat} className="tr-track" hidden={t !== tab} style={{ "--i": t === tab ? i : 0 } as CSSProperties}>
+              {list.map(([img, name, desc, href], k) => {
+                const body = (
+                  <>
+                    <div className="tr-img"><img src={"/img/" + img} alt={name} loading="lazy" /></div>
+                    <div className="tr-info"><b>{name}</b><p>{desc}</p></div>
+                  </>
+                );
+                return (
+                  <div key={name} className={"tr-card" + (t === tab && k === i ? " on" : "")} onClick={(e) => k !== i && (e.preventDefault(), setI(k))}>
+                    {href ? <a href={href}>{body}</a> : body}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </div>
         <button className="tr-arrow next" disabled={i === cards.length - 1} onClick={() => setI(i + 1)} aria-label="다음">&gt;</button>
       </div>
@@ -341,6 +358,8 @@ export default function Home() {
       <Greeting />
       <Special />
       <Faq items={FAQ} />
+      {/* ties the home page to the clinic node in layout.tsx, so search and AI engines know what this site is about */}
+      <JsonLd data={graph(webPage("/", "논산 한의원 광명당한의원, 강경 SINCE 1966", "1966년부터 3대째 이어온 충남 논산시 강경읍 한의원 광명당한의원의 홈페이지: 진료과목, 치료 장비, 의료진, 진료시간, 오시는 길, 자주 묻는 질문.", { medical: false, about: [clinicRef], image: "/img/exterior-wide.jpg" }))} />
     </main>
   );
 }
