@@ -55,7 +55,7 @@ const clinic = {
   priceRange: "₩₩",
   currenciesAccepted: "KRW",
   paymentAccepted: "현금, 신용카드",
-  address: { "@type": "PostalAddress", streetAddress: "강경읍 대흥로6번길 9", addressLocality: "논산시", addressRegion: "충청남도", addressCountry: "KR" },
+  address: { "@type": "PostalAddress", streetAddress: "강경읍 대흥로6번길 9", postalCode: "32939", addressLocality: "논산시", addressRegion: "충청남도", addressCountry: "KR" },
   geo: { "@type": "GeoCoordinates", latitude: GEO.lat, longitude: GEO.lng },
   hasMap: [PLACE, KAKAO_PLACE],
   openingHoursSpecification: [
