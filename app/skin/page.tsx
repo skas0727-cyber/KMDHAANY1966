@@ -3,6 +3,64 @@ import { CATEGORIES, PROGRAMS, type Program } from "../programs";
 import { pageMeta, TEL } from "../site";
 import { JsonLd, graph, webPage, therapy, itemList } from "../seo";
 
+// app/skin/page.tsx 상단 (import 구문 바로 아래에 붙여넣기)
+
+const AFTERCARE_GUIDES = [
+  {
+    id: "removal",
+    badge: "점 · 검버섯 · 쥐젖 · 편평사마귀",
+    title: "점 · 잡티 제거 후 안내",
+    cycle: "피부 상태에 따라 보통 1개월 전후",
+    tags: ["딱지 제거 금지", "재생 테이프·연고 관리", "자외선 차단", "자극 최소화"],
+    notices: [
+      "제거한 부위에는 붉은기나 작은 상처·딱지가 생길 수 있으며, 회복 과정에서 일시적으로 색이 진하거나 연하게 보일 수 있습니다.",
+      "시술 부위는 손으로 만지거나 딱지를 억지로 떼지 말고, 안내받은 방법에 따라 연고나 재생 테이프를 사용해 주세요.",
+      "세안·화장은 시술 부위를 자극하지 않도록 주의해 주시고, 상처가 아물 때까지 스크럽·필링 등 자극적인 관리는 피해 주세요.",
+      "회복 후 색소침착을 줄이기 위해 외출 시 자외선 차단에 특히 신경 써주세요.",
+      "시술 당일은 음주, 사우나, 찜질방, 수영, 격한 운동을 피해 주세요.",
+    ],
+  },
+  {
+    id: "lifting",
+    badge: "슈링크 · 탄력 리프팅",
+    title: "리프팅 시술 후 안내",
+    cycle: "피부 상태와 시술 범위에 따라 개별 안내",
+    tags: ["강한 마사지 금지", "보습·자외선 차단", "당일 열감 활동 제한", "당일 세안·화장 주의"],
+    notices: [
+      "시술 후 일시적인 붉은기나 열감, 얼얼함이 있을 수 있으며 만졌을 때 약간 뻐근하거나 예민하게 느껴질 수 있습니다.",
+      "가벼운 세안과 화장은 가능하나, 시술 당일에는 가급적 피부를 쉬게 해주고 당분간 시술 부위를 강하게 누르거나 마사지하는 것은 피해 주세요.",
+      "평소처럼 보습과 자외선 차단을 꼼꼼히 해주시고, 시술 당일 음주, 사우나, 찜질방, 격한 운동처럼 얼굴에 열이 많이 나는 활동은 피해 주세요.",
+      "시술 후 변화는 즉시 느껴지는 부분도 있지만 이후 콜라겐 재생과 함께 서서히 나타나며 개인에 따라 차이가 있습니다.",
+    ],
+  },
+  {
+    id: "texture",
+    badge: "프락셀 · PN 스킨부스터",
+    title: "피부결 · 흉터 시술 후 안내",
+    cycle: "피부 회복 상태를 확인한 후 안내",
+    tags: ["각질·딱지 자연 탈락", "충분한 보습·재생", "스크럽·필링 금지", "손 접촉 최소화"],
+    notices: [
+      "시술 후 붉은기, 화끈거림, 따가움이 나타날 수 있으며 이후 건조함이나 미세한 각질·딱지가 생길 수 있습니다.",
+      "시술 당일은 부위를 가급적 손으로 만지거나 문지르지 말고, 안내받은 시점부터 부드럽게 세안해 주세요.",
+      "보습과 재생 관리에 신경 써주시고 외출 시에는 자외선 차단제를 충분히 발라주세요. 생긴 각질이나 딱지는 억지로 제거하지 마세요.",
+      "며칠간 스크럽·필링 등 자극적인 관리는 피하고, 시술 당일 음주, 사우나, 찜질방, 격한 운동을 피해 주세요.",
+    ],
+  },
+  {
+    id: "toning",
+    badge: "레이저 · 듀얼 · 트리플 토닝",
+    title: "색소 · 토닝 시술 후 안내",
+    cycle: "피부 상태에 따라 보통 1주 전후",
+    tags: ["당일 가벼운 세안 가능", "충분한 보습", "자외선 차단 필수", "열감 활동 자제"],
+    notices: [
+      "시술 후 일시적으로 피부가 붉거나 따갑고 건조하게 느껴질 수 있으며, 반응 과정에서 색소가 잠시 진해 보일 수 있습니다.",
+      "당일부터 가벼운 세안과 화장은 가능합니다. 다만 며칠간 피부를 세게 문지르거나 스크럽·필링은 피해주시고 보습에 신경 써주세요.",
+      "외출 시에는 자외선 차단제를 충분히 발라주세요. 미세한 각질이나 작은 딱지가 생기면 억지로 떼지 말고 자연스럽게 떨어지도록 두세요.",
+      "시술 당일은 음주, 사우나, 찜질방, 격한 운동처럼 얼굴에 열이 많이 나는 활동은 피해 주세요.",
+    ],
+  },
+];
+
 // "피부과" is a medical-specialty name a 한의원 must not use; target "피부 한의원" instead
 export const metadata = pageMeta(
   "/skin",
@@ -164,6 +222,61 @@ export default function Skin() {
             {PROGRAMS.filter((p) => p.cat === cat).map((p) => <PriceItem key={p.slug} p={p} />)}
           </div>
         ))}
+      </section>
+      <section id="aftercare" className="sub-cat">
+        <Head
+          title="시술 후 주의사항 및 관리 안내"
+          lead={"안전하고 만족스러운 피부 회복을 위해 시술별 안내사항을 꼭 확인해\u00A0주세요."}
+        />
+        <ul className="sub-cards sc-boost" style={{ "--cols": 2 } as React.CSSProperties} data-aos>
+          {AFTERCARE_GUIDES.map((guide) => (
+            <li key={guide.id} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <span style={{ display: "inline-block", fontSize: "0.8rem", fontWeight: 600, color: "#8b6f4e", marginBottom: "6px" }}>
+                  {guide.badge}
+                </span>
+                <h3>{guide.title}</h3>
+
+                {/* 핵심 요약 태그 */}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", margin: "12px 0 16px" }}>
+                  {guide.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      style={{
+                        fontSize: "0.78rem",
+                        fontWeight: 500,
+                        color: "#78716c",
+                        backgroundColor: "#f5f5f4",
+                        padding: "3px 10px",
+                        borderRadius: "999px",
+                      }}
+                    >
+                      · {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* 상세 주의사항 목록 */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
+                  {guide.notices.map((notice, idx) => (
+                    <p key={idx} style={{ margin: 0, fontSize: "0.92rem", lineHeight: 1.6 }}>
+                      ※ {notice}
+                    </p>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <p className="sc-note" style={{ marginBottom: "4px" }}>
+                  <strong>다음 시술 안내:</strong> {guide.cycle}
+                </p>
+                <p className="sc-note">
+                  ※ 진물·붓기·통증 등 불편한 증상이 심하거나 오래 지속되면 한의원으로 연락해 주세요.
+                </p>
+              </div>
+            </li>
+          ))}
+        </ul>
         <a className="sc-all" href="/program">전체 시술 메뉴 보기</a>
       </section>
 
