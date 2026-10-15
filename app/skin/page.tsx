@@ -12,7 +12,7 @@ export const metadata = pageMeta(
 );
 
 
-const TABS: [string, string][] = [["first", "첫 방문 체험가"], ["concern", "색소와 잡티"], ["diagnosis", "검사와 치료"], ["lifting", "리프팅"], ["booster", "스킨부스터"], ["price", "가격표"]];
+const TABS: [string, string][] = [["first", "첫 방문 체험가"], ["concern", "색소와 잡티"], ["diagnosis", "검사와 치료"], ["lifting", "리프팅"], ["booster", "스킨부스터"], ["price", "가격표"], ["after", "시술 후 안내"];
 // [illustration file in /img/skin (.jpg, Higgsfield GPT Image 2), name, description]
 const CONDITIONS = [
   ["geomburseot", "검버섯", "나이가 들수록 늘어나는 흔한 병변으로, 피부 표면의 각질이 두껍게 쌓이며 갈색에서 흑갈색으로 도드라집니다. 만졌을 때 표면이 거칠게 느껴지는 경우가 많습니다."],
